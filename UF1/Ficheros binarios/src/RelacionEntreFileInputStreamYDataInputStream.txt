@@ -1,0 +1,2 @@
+1.Averigua jerárquicamente, ¿cuál es la relación entre DataInputStream y FileInputStream?
+FileInputStream hereda de InputStream y DataInputStream hereda de FilterInputStream que también hereda de InputStream.

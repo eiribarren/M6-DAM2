@@ -1,0 +1,5 @@
+el,fichero,aquest
+si
+esstupendisimo,este,es,el,quinto
+una,linea,mas
+y,otra

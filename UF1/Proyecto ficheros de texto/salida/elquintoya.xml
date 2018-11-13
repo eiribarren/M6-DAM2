@@ -1,0 +1,26 @@
+<doc>
+	<elem nr="1">
+		<quetal>el</quetal>
+		<epumer>fichero</epumer>
+		<prueba>aquest</prueba>
+	</elem>
+	<elem nr="2">
+		<quetal>si</quetal>
+	</elem>
+	<elem nr="3">
+		<quetal>esstupendisimo</quetal>
+		<epumer>este</epumer>
+		<prueba>es</prueba>
+		<dos>el</dos>
+		<altre>quinto</altre>
+	</elem>
+	<elem nr="4">
+		<quetal>una</quetal>
+		<epumer>linea</epumer>
+		<prueba>mas</prueba>
+	</elem>
+	<elem nr="5">
+		<quetal>y</quetal>
+		<epumer>otra</epumer>
+	</elem>
+</doc>

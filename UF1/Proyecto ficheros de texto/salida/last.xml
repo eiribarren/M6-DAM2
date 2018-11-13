@@ -1,0 +1,22 @@
+<doc>
+	<elem nr="1">
+		<quetal>Aqueste</quetal>
+		<epumer>es</epumer>
+		<prueba>lultim</prueba>
+	</elem>
+	<elem nr="2">
+		<quetal>the</quetal>
+		<epumer>last</epumer>
+	</elem>
+	<elem nr="3">
+		<quetal>of</quetal>
+		<epumer>the</epumer>
+		<prueba>lastests</prueba>
+	</elem>
+	<elem nr="4">
+		<quetal>laster</quetal>
+		<epumer>than</epumer>
+		<prueba>the</prueba>
+		<dos>lastestestesrsts</dos>
+	</elem>
+</doc>

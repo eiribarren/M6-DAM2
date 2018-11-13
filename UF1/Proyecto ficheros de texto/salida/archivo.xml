@@ -1,0 +1,20 @@
+<doc>
+	<elem nr="1">
+		<quetal>test</quetal>
+		<epumer>1</epumer>
+		<prueba>prueba</prueba>
+	</elem>
+	<elem nr="2">
+		<quetal>1</quetal>
+		<epumer>2</epumer>
+		<prueba>3</prueba>
+		<dos>4</dos>
+		<altre>5</altre>
+	</elem>
+	<elem nr="3">
+		<quetal>que</quetal>
+		<epumer>pasa</epumer>
+		<prueba>epumer</prueba>
+		<dos>siiii</dos>
+	</elem>
+</doc>

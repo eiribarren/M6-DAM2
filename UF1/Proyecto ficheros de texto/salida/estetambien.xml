@@ -1,0 +1,49 @@
+<doc>
+	<elem nr="1">
+		<quetal>y</quetal>
+		<epumer>van</epumer>
+		<prueba>seis</prueba>
+	</elem>
+	<elem nr="2">
+		<quetal>tiene</quetal>
+		<epumer>que</epumer>
+		<prueba>ser</prueba>
+		<dos>punto</dos>
+		<altre>dat</altre>
+	</elem>
+	<elem nr="3">
+		<quetal>puede</quetal>
+		<epumer>ser</epumer>
+		<prueba>lo</prueba>
+		<dos>que</dos>
+		<altre>tu</altre>
+		<altre>quieras</altre>
+	</elem>
+	<elem nr="4">
+		<quetal>como</quetal>
+		<epumer>que</epumer>
+		<prueba>puede</prueba>
+		<dos>ser</dos>
+		<altre>lo</altre>
+		<altre>que</altre>
+		<altre>yo</altre>
+		<altre>quiera</altre>
+		<altre>?</altre>
+	</elem>
+	<elem nr="5">
+		<quetal>pues</quetal>
+		<epumer>porque</epumer>
+		<prueba>es</prueba>
+		<dos>binario</dos>
+		<altre>que</altre>
+		<altre>extension</altre>
+		<altre>va</altre>
+		<altre>a</altre>
+		<altre>tener</altre>
+		<altre>?</altre>
+	</elem>
+	<elem nr="6">
+		<quetal>bin</quetal>
+		<epumer>?</epumer>
+	</elem>
+</doc>
