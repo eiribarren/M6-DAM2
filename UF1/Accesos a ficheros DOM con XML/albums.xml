@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<albums>
+	<album> 
+        <autor>Joaquín Sabina</autor> 
+		<titulo>Nos sobran los motivos</titulo> 
+        <formato>MP3</formato> 
+	</album>
+	<album>
+		<autor>Epumer</autor>
+		<titulo>Lo best thel nadal</titulo>
+		<formato>MP3</formato>
+	</album>
+	<album>
+		<autor>El grup</autor>
+		<titulo>tuDic</titulo>
+		<formato>MPDIOS</formato>
+	</album>
+</albums>
