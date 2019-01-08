@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><Empleados><empleado><id>1</id><apellido>Buenisimo</apellido><dep>10</dep><salario>1000.45</salario></empleado><empleado><id>2</id><apellido>Marc</apellido><dep>43</dep><salario>2000.54</salario></empleado><empleado><id>3</id><apellido>Hey</apellido><dep>23</dep><salario>4333.32</salario></empleado></Empleados>
