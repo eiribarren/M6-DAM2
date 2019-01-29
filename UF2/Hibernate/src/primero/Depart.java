@@ -1,5 +1,5 @@
 package primero;
-// Generated 15-ene-2019 19:28:00 by Hibernate Tools 5.1.10.Final
+// Generated 22-ene-2019 18:43:46 by Hibernate Tools 5.1.10.Final
 
 import java.util.HashSet;
 import java.util.Set;
