@@ -9,10 +9,7 @@ import primero.*;
 public class Main2 {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		//En primer lugar se obtiene la sesión creada por el Singleton.
 		SessionFactory sesion = HibernateUtil.getSessionFactory();
-		//Abrimos sesión e iniciamos una transacción
 		Session session = sesion.openSession();
 		Transaction tx = session.beginTransaction();
 		System.out.println("Inserto una fila en emple");
