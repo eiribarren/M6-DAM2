@@ -23,6 +23,8 @@ public abstract class PanelBDOO extends JPanel {
 		void insertarCamposEmple(HashMap<String, Campo> campos);
 		void insertarEmpleado(Emple emple);
 		void insertarDepartamento(Depart dept);
+		void modificarSalario(String apellido, String salario);
+		void eliminarEmpleado(String apellido);
 		Emple[] obtenerEmpleados();
 		Depart[] obtenerDepartamentos();
 		void consultaEmpleadosDept10();
@@ -36,5 +38,7 @@ public abstract class PanelBDOO extends JPanel {
 		void mostrarConsultasProyecto();
 		void mostrarImportarBaseDeDatos();
 		void mostrarConexionConDB(String ip, String puerto, String db, String usuario, String password);
+		void mostrarModificarSalario();
+		void mostrarEliminarEmpleado();
 	}
 }

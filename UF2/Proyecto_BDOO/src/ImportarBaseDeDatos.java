@@ -19,8 +19,8 @@ public class ImportarBaseDeDatos extends PanelBDOO {
 	public static final String _PUERTO_ = "Puerto";
 	public static final String _DB_ = "Base de datos";
 	public static final String _USUARIO_ = "Usuario";
-	public static final String _PASSWORD_ = "Contraseña";
-	String[] textCampos = { "IP", "Puerto", "Base de datos", "Usuario", "Contraseña"};
+	public static final String _PASSWORD_ = "Contraseï¿½a";
+	String[] textCampos = { "IP", "Puerto", "Base de datos", "Usuario", "Contraseï¿½a"};
 	LinkedHashMap<String, Campo> campos;
 	JPanel formulario, mainPanel;
 	JButton conectarConDB;
@@ -43,6 +43,10 @@ public class ImportarBaseDeDatos extends PanelBDOO {
 	
 	@Override
 	void cargarUI() {
+		if (isLoaded)
+			return;
+		
+		isLoaded = true;
 		agregarCamposFormulario();
 		agregarFormulario();
 		agregarBotonConectarConDB();

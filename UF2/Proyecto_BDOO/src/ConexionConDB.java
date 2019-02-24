@@ -40,6 +40,10 @@ public class ConexionConDB extends PanelBDOO {
 	
 	@Override
 	void cargarUI() {
+		if (isLoaded)
+			return;
+		
+		isLoaded = true;
 		agregarTitulo();
 		agregarListaDeEmpleados();
 		agregarBotonDeseleccionar();

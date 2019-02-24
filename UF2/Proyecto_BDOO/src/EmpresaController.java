@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
 import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.Date;
@@ -28,6 +29,7 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.BevelBorder;
 
+import org.neodatis.odb.ClassRepresentation;
 import org.neodatis.odb.ODB;
 import org.neodatis.odb.ODBFactory;
 import org.neodatis.odb.Objects;
@@ -35,6 +37,8 @@ import org.neodatis.odb.core.query.criteria.ICriterion;
 import org.neodatis.odb.core.query.criteria.Or;
 import org.neodatis.odb.core.query.criteria.Where;
 import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
+
+import com.sun.glass.events.WindowEvent;
 
 import objetos.Depart;
 import objetos.Emple;
@@ -47,6 +51,7 @@ implements PanelBDOO.PanelBDOOListener
 	JPanel mainPanel, statusBar;
 	JButton atras, inicio;
 	PanelBDOO panelActual;
+	public ODB odb;
 	public static final String __DB__ = "EMPRESA.DB";
 	public static final Font __FUENTE__ = new Font("Tahoma", Font.PLAIN, 30);
 	
@@ -55,10 +60,14 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			controller.cargarUI();
 		} catch (Exception e) {
-			System.out.println("OcurriÛ un error.");
+			System.out.println("OcurriÔøΩ un error.");
 			e.printStackTrace();
 			System.exit(-1);
 		}
+	}
+	
+	public EmpresaController() {
+		this.odb = ODBFactory.open(__DB__);
 	}
 	
 	public void cargarUI()  {
@@ -84,11 +93,32 @@ implements PanelBDOO.PanelBDOOListener
 		mainFrame.add(statusBar, BorderLayout.SOUTH);
 		statusBar.setBorder(new BevelBorder(BevelBorder.LOWERED));
 		mainFrame.setTitle("Proyecto BDOO");
+		mainFrame.addWindowListener(new WindowListener() {
+			@Override
+			public void windowOpened(java.awt.event.WindowEvent e) {
+			}
+			@Override
+			public void windowClosing(java.awt.event.WindowEvent e) {
+				if (odb != null)
+					odb.close();
+		        System.exit(0);
+			}
+			@Override
+			public void windowClosed(java.awt.event.WindowEvent e) {}
+			@Override
+			public void windowIconified(java.awt.event.WindowEvent e) {}
+			@Override
+			public void windowDeiconified(java.awt.event.WindowEvent e) {}
+			@Override
+			public void windowActivated(java.awt.event.WindowEvent e) {}
+			@Override
+			public void windowDeactivated(java.awt.event.WindowEvent e) {}
+		});
 	}
 
 	private void prepararBotonDeAtras() {
 		atras = new JButton();
-		atras.setText(" ATR¡S ");
+		atras.setText(" ATRÔøΩS ");
 		atras.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -119,7 +149,7 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			mostrarPantalla(new MenuPrincipal(this, __FUENTE__));
 		} catch (Exception e) {
-			mostrarInformacion("OcurriÛ un error");
+			mostrarInformacion("OcurriÔøΩ un error");
 		}
 	}
 
@@ -140,7 +170,7 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			mostrarPantalla(new InsertarEmple(this, __FUENTE__));
 		} catch (Exception e) {
-			mostrarInformacion("OcurriÛ un error");
+			mostrarInformacion("OcurriÔøΩ un error");
 		}
 	}
 	
@@ -149,7 +179,7 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			mostrarPantalla(new InsertarDepart(this, __FUENTE__));
 		} catch (Exception e) {
-			mostrarInformacion("OcurriÛ un error");
+			mostrarInformacion("OcurriÔøΩ un error");
 		}
 	}
 
@@ -158,7 +188,7 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			mostrarPantalla(new ListaDeEmpleados(this, obtenerEmpleados(), __FUENTE__));
 		} catch (Exception e) {
-			mostrarInformacion("OcurriÛ un error");
+			mostrarInformacion("OcurriÔøΩ un error");
 			e.printStackTrace();
 		}
 	}
@@ -168,7 +198,8 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			mostrarPantalla(new ListaDeDepartamentos(this, obtenerDepartamentos(), __FUENTE__));
 		} catch (Exception e) {
-			mostrarInformacion("OcurriÛ un error");
+			mostrarInformacion("OcurriÔøΩ un error");
+			e.printStackTrace();
 		}
 	}
 	
@@ -177,7 +208,7 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			mostrarPantalla(new ConsultasProyecto(this, __FUENTE__));
 		} catch (Exception e) {
-			mostrarInformacion("OcurriÛ un error");
+			mostrarInformacion("OcurriÔøΩ un error");
 		}
 	}
 
@@ -195,7 +226,7 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			mostrarPantalla(new ImportarBaseDeDatos(this, __FUENTE__));
 		} catch (Exception e) {
-			mostrarInformacion("OcurriÛ un error");
+			mostrarInformacion("OcurriÔøΩ un error");
 		}
 	}
 	
@@ -218,19 +249,20 @@ implements PanelBDOO.PanelBDOOListener
 									 result.getString("oficio"),
 									 obtenerDirectorParaImportar(conexion, result.getInt("dir")),
 									 result.getDate("fecha_alt"),
+									 result.getFloat("salario"),
 									 result.getFloat("comision"),
 									 obtenerDepartamentoParaImportar(conexion, result.getInt("dept_no"))));
 			}
 			
 			mostrarPantalla(new ConexionConDB(this, Arrays.copyOf(emples.toArray(), emples.size(), Emple[].class)));
 		} catch (ClassNotFoundException e) {
-			mostrarInformacion("No est· instalado el driver JDBC");
+			mostrarInformacion("No estÔøΩ instalado el driver JDBC");
 			e.printStackTrace();
 		} catch (SQLException e) {
-			mostrarInformacion("OcurriÛ un error sql");
+			mostrarInformacion("OcurriÔøΩ un error sql");
 			e.printStackTrace();
 		} catch (Exception e) {
-			mostrarInformacion("OcurriÛ un error");
+			mostrarInformacion("OcurriÔøΩ un error");
 		} finally {
 			if (conexion != null) {
 				try {
@@ -242,6 +274,26 @@ implements PanelBDOO.PanelBDOOListener
 		}
 	}
 		
+	@Override
+	public void mostrarModificarSalario() {
+		try {
+			mostrarPantalla(new ModificarSalario(this, __FUENTE__));
+		} catch (Exception e) {
+			mostrarInformacion("Ocurri√≥ un error");
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void mostrarEliminarEmpleado() {
+		try {
+			mostrarPantalla(new EliminarEmpleado(this, __FUENTE__));
+		} catch (Exception e) {
+			mostrarInformacion("Ocurri√≥ un error");
+			e.printStackTrace();
+		}
+	}
+	
 	public void mostrarPanel(JPanel panel) {
 		statusBar.removeAll();
 		statusBar.repaint();
@@ -261,6 +313,7 @@ implements PanelBDOO.PanelBDOOListener
 			!(campos.get(Emple.__apellido__).campo instanceof JTextField) ||
 			!(campos.get(Emple.__comision__).campo instanceof JTextField) ||
 			!(campos.get(Emple.__oficio__).campo instanceof JTextField) ||
+			!(campos.get(Emple.__salario__).campo instanceof JTextField) ||
 			!(campos.get(Emple.__dir__).campo instanceof JComboBox) ||
 			!(campos.get(Emple.__dept__).campo instanceof JComboBox)) 
 		{
@@ -268,7 +321,7 @@ implements PanelBDOO.PanelBDOOListener
 			return;
 		}
 		int empNo;
-		float comision;
+		float comision, salario;
 		String apellido = ((JTextField)campos.get(Emple.__apellido__).campo).getText();
 		String oficio = ((JTextField)campos.get(Emple.__oficio__).campo).getText();
 		JComboBox<Depart> departamentosBox = (JComboBox<Depart>)campos.get(Emple.__dept__).campo;
@@ -278,17 +331,24 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			empNo = Integer.parseInt(((JTextField)campos.get(Emple.__empNo__).campo).getText());
 		} catch ( NumberFormatException e ) {
-			mostrarInformacion("Valor no v·lido para empNo");
+			mostrarInformacion("Valor no vÔøΩlido para empNo");
 			return;
 		}
 		try {
 			comision = Float.parseFloat(((JTextField)campos.get(Emple.__comision__).campo).getText());
 		} catch ( NumberFormatException e ) {
-			mostrarInformacion("Valor no v·lido para comisiÛn");
+			mostrarInformacion("Valor no vÔøΩlido para comisiÔøΩn");
 			return;
 		}
 		
-		insertarEmpleado(new Emple(empNo, apellido, oficio, dir, new Date(System.currentTimeMillis()), comision, dept));
+		try {
+			salario = Float.parseFloat(((JTextField)campos.get(Emple.__salario__).campo).getText());
+		} catch ( NumberFormatException e ) {
+			mostrarInformacion("Valor no vÔøΩlido para el salario");
+			return;
+		}
+		
+		insertarEmpleado(new Emple(empNo, apellido, oficio, dir, new Date(System.currentTimeMillis()), salario, comision, dept));
 	}
 	
 	@Override
@@ -307,7 +367,7 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			deptNo = Integer.parseInt(((JTextField)campos.get(Depart.__deptNo__).campo).getText());
 		} catch ( NumberFormatException e ) {
-			mostrarInformacion("Valor no v·lido para deptNo");
+			mostrarInformacion("Valor no vÔøΩlido para deptNo");
 			return;
 		}
 		
@@ -318,10 +378,10 @@ implements PanelBDOO.PanelBDOOListener
 	@Override
 	public void insertarEmpleado(Emple emple) {
 		if (!comprobarCamposEmpleado(emple)) {
+			
 			return;
 		};
 		
-		ODB odb = ODBFactory.open(__DB__);
 		ICriterion criterio;
 		CriteriaQuery query;
 		try {
@@ -345,10 +405,10 @@ implements PanelBDOO.PanelBDOOListener
 			odb.commit();
 			mostrarInformacion("Empleado insertado");
 		} catch (Exception e) {
-			mostrarInformacion("OcurriÛ un error");
+			mostrarInformacion("OcurriÔøΩ un error");
 			e.printStackTrace();
 		} finally {
-			odb.close();
+			
 		}
 	}
 
@@ -358,7 +418,7 @@ implements PanelBDOO.PanelBDOOListener
 			return false;
 		}
 		
-		if ( emple.getDir().getEmpNo() <= 0 || !comprobarCamposDirector(emple.getDir())) {
+		if ( emple.getDir().getEmpNo() <= 0 || !comprobarCamposDirector(emple, emple.getDir())) {
 			emple.setDir(null);
 		} 
 		
@@ -368,10 +428,10 @@ implements PanelBDOO.PanelBDOOListener
 		}
 		
 		if ( emple.getDept() == null ) {
-			mostrarInformacion("No se ha seleccionado ning˙n departamento");
+			mostrarInformacion("No se ha seleccionado ningÔøΩn departamento");
 			return false;
 		} else if ( emple.getDept().getDeptNo() <= 0 ) {
-			mostrarInformacion("No se ha seleccionado ning˙n departamento");
+			mostrarInformacion("No se ha seleccionado ningÔøΩn departamento");
 			return false;
 		}
 		
@@ -382,24 +442,25 @@ implements PanelBDOO.PanelBDOOListener
 		return true;
 	}
 
-	private boolean comprobarCamposDirector(Emple dir) {
+	private boolean comprobarCamposDirector(Emple emple, Emple dir) {
 		if ( dir.getEmpNo() <= 0) {
 			return false;
 		} else {
 			ICriterion criterio = Where.equal("empNo", dir.getEmpNo());
 			CriteriaQuery query = new CriteriaQuery(Emple.class, criterio);
-			ODB odb = ODBFactory.open(__DB__);
 			Objects<Emple> empleados = odb.getObjects(query);
-			odb.close();
 			if (empleados.size() > 0) {
-				Emple emple = empleados.getFirst();
-				if (!(emple.getApellido().equals(dir.getApellido()))) {
+				Emple empleado = empleados.getFirst();
+				if (!(empleado.getApellido().equals(dir.getApellido()))) {
 					return false;
+				} else {
+					emple.setDir(empleado);
+					return true;
 				}
 			}
 		}
 		
-		if (!comprobarCamposDirector(dir.getDir())) {
+		if (!comprobarCamposDirector(dir, dir.getDir())) {
 			dir.setDir(null);
 		}
 		
@@ -407,6 +468,15 @@ implements PanelBDOO.PanelBDOOListener
 			return false;
 		} else if ( dir.getDept().getDeptNo() <= 0 ) {
 			return false;
+		} else {
+			ICriterion criterio = Where.equal("deptNo", dir.getDept().getDeptNo());
+			CriteriaQuery query = new CriteriaQuery(Depart.class, criterio);
+			Objects<Depart> departamento = odb.getObjects(query);
+			if (departamento.size() > 0) {
+				dir.setDept(departamento.getFirst());
+			} else {
+				insertarDepartamento(dir.getDept());
+			}
 		}
 		
 		if ( dir.getFechaAlt() == null ) {
@@ -420,24 +490,25 @@ implements PanelBDOO.PanelBDOOListener
 	public void insertarDepartamento(Depart depart) {
 		if (depart.getDeptNo() <= 0) {
 			mostrarInformacion("El deptNo debe ser mayor que 0");
+			
 			return;
 		}
 		
 		if ( comprobarSiDepartExiste(depart.getDeptNo(), depart.getDnombre()) ) {
 			mostrarInformacion("El deptNo o dNombre ya existe");
+			
 			return;
 		}
 		
-		ODB odb = ODBFactory.open(__DB__);
 		try {
 			odb.store(depart);
 			odb.commit();
 			mostrarInformacion("Departamento insertado");
 		} catch (Exception e) {
-			mostrarInformacion("OcurriÛ un error");
+			mostrarInformacion("OcurriÔøΩ un error");
 			e.printStackTrace();
 		} finally {
-			odb.close();
+			
 		}
 	}
 
@@ -445,20 +516,16 @@ implements PanelBDOO.PanelBDOOListener
 	private boolean comprobarSiEmpleExiste(int empNo, String apellido) {
 		ICriterion criterio = new Or().add(Where.equal("empNo", empNo)).add(Where.equal("apellido", apellido));
 		CriteriaQuery query = new CriteriaQuery(Emple.class, criterio);
-		ODB odb = ODBFactory.open(__DB__);
 		Objects<Emple> empleados = odb.getObjects(query);
-		odb.close();
 		if (empleados.size() > 0)
 			return true;
 		return false;
 	}
 
 	private boolean comprobarSiDepartExiste(int deptNo, String dNombre) {
-		ODB odb = ODBFactory.open(__DB__);
 		ICriterion criterio = new Or().add(Where.equal("deptNo", deptNo)).add(Where.equal("dnombre", dNombre));
 		CriteriaQuery query = new CriteriaQuery(Depart.class, criterio);
 		Objects<Depart> departamentos = odb.getObjects(query);
-		odb.close();
 		if (departamentos.size() > 0)
 			return true;
 		return false;
@@ -467,18 +534,16 @@ implements PanelBDOO.PanelBDOOListener
 	//Metodos para obtener una lista de los empleados
 	@Override
 	public Emple[] obtenerEmpleados() {
-		ODB odb = ODBFactory.open(__DB__);
 		Objects<Emple> emples = odb.getObjects(Emple.class);
-		odb.close();
+		
 		
 		return Arrays.copyOf(emples.toArray(), emples.size(), Emple[].class);
 	}
 	
 	@Override
 	public Depart[] obtenerDepartamentos() {
-		ODB odb = ODBFactory.open(__DB__);
 		Objects<Depart> depts = odb.getObjects(Depart.class);
-		odb.close();
+		
 		
 		return Arrays.copyOf(depts.toArray(), depts.size(), Depart[].class);
 	}
@@ -486,13 +551,12 @@ implements PanelBDOO.PanelBDOOListener
 	//Metodos para realizar las consultas de la tercera parte del proyecto
 	@Override
 	public void consultaEmpleadosDept10() {
-		ODB odb = ODBFactory.open(__DB__);
 		ICriterion criterio = Where.equal("deptNo", 10);
 		CriteriaQuery query = new CriteriaQuery(Depart.class, criterio);
 		Objects<Depart> departamentos = odb.getObjects(query);
 		if (departamentos.size() == 0) {
 			mostrarInformacion("El departamento 10 no existe");
-			odb.close();
+			
 			return;
 		}
 		
@@ -504,9 +568,9 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			mostrarPantalla(new ListaDeEmpleados(this, Arrays.copyOf(emples.toArray(), emples.size(), Emple[].class), __FUENTE__));
 		} catch (Exception e) {
-			mostrarInformacion("OcurriÛ un error");
+			mostrarInformacion("OcurriÔøΩ un error");
 		} finally {
-			odb.close();
+			
 		}
 	}
 
@@ -514,11 +578,10 @@ implements PanelBDOO.PanelBDOOListener
 	public void consultaNumeroEmpleadosDeVentas() {
 		ICriterion criterio = Where.iequal("dnombre", "VENTAS");
 		CriteriaQuery query = new CriteriaQuery(Depart.class, criterio);
-		ODB odb = ODBFactory.open(__DB__);
 		Objects<Depart> departamentos = odb.getObjects(query);
 		if (departamentos.size() == 0) {
 			mostrarInformacion("El departamento VENTAS no existe");
-			odb.close();
+			
 			return;
 		}
 		
@@ -527,19 +590,18 @@ implements PanelBDOO.PanelBDOOListener
 		query = new CriteriaQuery(Emple.class, criterio);
 		Objects<Emple> emples = odb.getObjects(query);
 		mostrarInformacion("En el departamento de ventas hay " + emples.size() + " empleados");
-		odb.close();
+		
 	}
 	
 	@Override
 	public void consultaEmpleadosCuyoDirectorEsFernandez() {
-		ICriterion criterio = Where.iequal("apellido", "FERNANDEZ");
+		ICriterion criterio = new Or().add(Where.iequal("apellido", "FERNANDEZ")).add(Where.iequal("apellido", "FERN√ÅNDEZ"));
 		CriteriaQuery query = new CriteriaQuery(Emple.class, criterio);
-		ODB odb = ODBFactory.open(__DB__);
 		Objects<Emple> emples = odb.getObjects(query);
 		
 		if (emples.size() == 0) {
-			mostrarInformacion("No hay ning˙n empleado llamado FERNANDEZ");
-			odb.close();
+			mostrarInformacion("No hay ningÔøΩn empleado llamado FERNANDEZ");
+			
 			return;
 		}
 		
@@ -550,28 +612,27 @@ implements PanelBDOO.PanelBDOOListener
 		emples = odb.getObjects(query);
 		
 		if (emples.size() == 0) {
-			mostrarInformacion("No hay ning˙n empleado cuyo director sea FERNANDEZ");
-			odb.close();
+			mostrarInformacion("No hay ningÔøΩn empleado cuyo director sea FERNANDEZ");
+			
 			return;
 		}
 		
 		try {
 			mostrarPantalla(new ListaDeEmpleados(this, Arrays.copyOf(emples.toArray(), emples.size(), Emple[].class), __FUENTE__));
 		} catch (Exception e) {
-			mostrarInformacion("OcurriÛ un error");
+			mostrarInformacion("OcurriÔøΩ un error");
 		} finally {
-			odb.close();
+			
 		}
 	}
 
 	@Override
 	public void consultaNumeroDeEmpleadosPorDepartamento() {
-		ODB odb = ODBFactory.open(__DB__);
 		Objects<Depart> departamentos = odb.getObjects(Depart.class);
 		
 		if (departamentos.size() == 0) {
-			mostrarInformacion("No hay ning˙n departamento creado");
-			odb.close();
+			mostrarInformacion("No hay ningÔøΩn departamento creado");
+			
 			return;
 		}
 		
@@ -589,10 +650,8 @@ implements PanelBDOO.PanelBDOOListener
 			info.add(texto);
 		}
 		
-		odb.close();
-		
 		JPanel panel = new JPanel(new GridLayout(0,1));
-		JLabel titulo = new JLabel("N˙mero de empleados por departamento");
+		JLabel titulo = new JLabel("NÔøΩmero de empleados por departamento");
 		titulo.setFont(__FUENTE__);
 		panel.add(titulo);
 		panel.add(scrollPane);
@@ -601,7 +660,7 @@ implements PanelBDOO.PanelBDOOListener
 
 	//Metodos de importacion
 	public Emple obtenerDirectorParaImportar(Connection conexion, int empNo) throws SQLException {
-		Emple dir = new Emple(0,"-","-",null,null,0f,null);
+		Emple dir = new Emple(0,"-","-",null,null, 0f,0f,null);
 		
 		if ( empNo != 0 ) {
 			Statement sentencia = conexion.createStatement();
@@ -612,6 +671,7 @@ implements PanelBDOO.PanelBDOOListener
 							 dirResult.getString("oficio"),
 							 obtenerDirectorParaImportar(conexion, dirResult.getInt("dir")),
 							 dirResult.getDate("fecha_alt"),
+							 dirResult.getFloat("salario"),
 							 dirResult.getFloat("comision"),
 							 obtenerDepartamentoParaImportar(conexion, dirResult.getInt("dept_no")));
 		}
@@ -632,6 +692,51 @@ implements PanelBDOO.PanelBDOOListener
 		}
 		
 		return depart;
+	}
+
+	@Override
+	public void modificarSalario(String apellido, String salario) {
+		float salarioFloat;
+		try {
+			salarioFloat = Float.parseFloat(salario);
+		} catch (NumberFormatException e) {
+			mostrarInformacion("Valor no v√°lido para salario");
+			return;
+		}
+		
+		ICriterion criterio = Where.iequal("apellido", apellido);
+		CriteriaQuery query = new CriteriaQuery(Emple.class, criterio);
+		Objects<Emple> result = odb.getObjects(query);
+		
+		Emple emple = null;
+		if (result.size() > 0) {
+			emple = result.getFirst();
+			emple.setSalario(salarioFloat);
+		} else {
+			mostrarInformacion("No se encontr√≥ el empleado");
+			return;
+		}
+		
+		odb.store(emple);
+		mostrarInformacion("Se modific√≥ el salario de " + apellido);
+	}
+
+	@Override
+	public void eliminarEmpleado(String apellido) {
+		ICriterion criterio = Where.iequal("apellido", apellido);
+		CriteriaQuery query = new CriteriaQuery(Emple.class, criterio);
+		Objects<Emple> result = odb.getObjects(query);
+		
+		Emple emple = null;
+		if (result.size() > 0) {
+			emple = result.getFirst();
+		} else {
+			mostrarInformacion("No se encontr√≥ el empleado");
+			return;
+		}
+		
+		odb.delete(emple);
+		mostrarInformacion("Se elimin√≥ el empleado " + apellido);
 	}
 
 }

@@ -11,7 +11,7 @@ import java.awt.GridLayout;
 
 public class MenuPrincipal extends PanelBDOO {
 	
-	JButton insertarDepartButton, insertarEmpleButton, listaDeEmpleados, listaDeDepartamentos, consultasProyecto, importarBaseDeDatos;
+	JButton insertarDepartButton, insertarEmpleButton, listaDeEmpleados, listaDeDepartamentos, consultasProyecto, importarBaseDeDatos, modificarSalario, eliminarEmpleado;
 	JLabel textoPrincipal;
 	JPanel botonesPanel;
 	PanelBDOOListener listener;
@@ -47,6 +47,34 @@ public class MenuPrincipal extends PanelBDOO {
 		agregarBotonListaDeDepartamentos();
 		agregarBotonConsultasProyecto();
 		agregarBotonImportarBaseDeDatos();
+		agregarBotonModificarSalario();
+		agregarBotonEliminarEmpleado();
+	}
+
+	private void agregarBotonEliminarEmpleado() {
+		eliminarEmpleado = new JButton();
+		eliminarEmpleado.setText("Eliminar empleado");
+		eliminarEmpleado.setFont(this.fuente);
+		eliminarEmpleado.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				listener.mostrarEliminarEmpleado();
+			}
+		});
+		botonesPanel.add(eliminarEmpleado);
+	}
+
+	private void agregarBotonModificarSalario() {
+		modificarSalario = new JButton();
+		modificarSalario.setText("Modificar salario");
+		modificarSalario.setFont(this.fuente);
+		modificarSalario.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				listener.mostrarModificarSalario();
+			}
+		});
+		botonesPanel.add(modificarSalario);
 	}
 
 	private void agregarBotonConsultasProyecto() {
@@ -91,7 +119,7 @@ public class MenuPrincipal extends PanelBDOO {
 	private void agregarTextoPrincipal() {
 		textoPrincipal = new JLabel();
 		textoPrincipal.setAlignmentX(CENTER_ALIGNMENT);
-		textoPrincipal.setText("Selecciona una acción");
+		textoPrincipal.setText("Selecciona una acciï¿½n");
 		textoPrincipal.setFont(this.fuente);
 		this.add(textoPrincipal);
 	}

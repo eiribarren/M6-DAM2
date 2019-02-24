@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedHashMap;
 import java.util.Vector;
 
 import javax.swing.DefaultListCellRenderer;
@@ -21,9 +22,9 @@ public class ListaDeDepartamentos extends PanelBDOO {
 	Depart[] departamentos;
 	PanelBDOOListener listener;
 	JPanel informacion;
-	JLabel deptNoLabel, dNombreLabel, locLabel;
-	JTextField deptNoField, dNombreField, locField;
-	
+	LinkedHashMap<String, Campo> campos;
+	String[] camposText = { Depart.__deptNo__, Depart.__dnombre__, Depart.__loc__ };
+	 
 	public ListaDeDepartamentos(PanelBDOOListener listener, Depart[] departamentos) throws Exception {
 		super();
 		if ( listener == null ) {
@@ -35,6 +36,7 @@ public class ListaDeDepartamentos extends PanelBDOO {
 		
 		this.listener = listener;
 		this.informacion = new JPanel(new GridLayout(0,2));
+		this.campos = new LinkedHashMap<String, Campo>();
 		this.departamentos = departamentos;
 	}
 	
@@ -57,29 +59,16 @@ public class ListaDeDepartamentos extends PanelBDOO {
 	}
 
 	private void agregarCamposDeInformacion() {
-		this.deptNoLabel = new JLabel("deptNo: ");
-		this.deptNoLabel.setFont(this.fuente);
-		this.deptNoField = new JTextField();
-		this.deptNoField.setFont(this.fuente);
-		this.deptNoField.setEditable(false);
-		this.informacion.add(deptNoLabel);
-		this.informacion.add(deptNoField);
-		
-		this.dNombreLabel = new JLabel("Nombre: ");
-		this.dNombreLabel.setFont(this.fuente);
-		this.dNombreField = new JTextField();
-		this.dNombreField.setFont(this.fuente);
-		this.dNombreField.setEditable(false);
-		this.informacion.add(dNombreLabel);
-		this.informacion.add(dNombreField);
-		
-		this.locLabel = new JLabel("Localización: ");
-		this.locLabel.setFont(this.fuente);
-		this.locField = new JTextField();
-		this.locField.setFont(this.fuente);
-		this.locField.setEditable(false);
-		this.informacion.add(locLabel);
-		this.informacion.add(locField);
+		for (String campoText : camposText) {
+			JTextField textField = new JTextField();
+			textField.setFont(fuente);
+			textField.setEditable(false);
+			Campo campo = new Campo(campoText + ": ", textField);
+			campo.etiqueta.setFont(fuente);
+			campos.put(campoText, campo);
+			informacion.add(campo.etiqueta);
+			informacion.add(textField);
+		}
 		
 		GridBagConstraints c = new GridBagConstraints();
 		c.weighty = 1;
@@ -108,8 +97,8 @@ public class ListaDeDepartamentos extends PanelBDOO {
 	}
 	
 	private void cargarDatos(Depart depart) {
-		deptNoField.setText(String.valueOf(depart.getDeptNo()));
-		dNombreField.setText(depart.getDnombre());
-		locField.setText(depart.getLoc());
+		((JTextField)campos.get(Depart.__deptNo__).campo).setText(String.valueOf(depart.getDeptNo()));
+		((JTextField)campos.get(Depart.__dnombre__).campo).setText(depart.getDnombre());
+		((JTextField)campos.get(Depart.__loc__).campo).setText(depart.getLoc());
 	}
 }

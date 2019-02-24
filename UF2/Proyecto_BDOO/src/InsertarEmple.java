@@ -30,7 +30,7 @@ import java.awt.GridBagLayout;
 public class InsertarEmple extends PanelBDOO {
 	
 	PanelBDOOListener listener;
-	String[] textoCampos = {Emple.__empNo__, Emple.__apellido__, Emple.__oficio__, Emple.__comision__};
+	String[] textoCampos = {Emple.__empNo__, Emple.__apellido__, Emple.__oficio__, Emple.__salario__, Emple.__comision__};
 	LinkedHashMap<String, Campo> campos;
 	JPanel formulario, mainPanel;
 	JButton insertarEmple;
@@ -82,7 +82,7 @@ public class InsertarEmple extends PanelBDOO {
 		JLabel dirLabel = campos.get(Emple.__dir__).etiqueta;
 		
 		Emple[] empleados = listener.obtenerEmpleados();
-		dirField.addItem(new Emple(0, "-", "-", null, null, 0, null));
+		dirField.addItem(new Emple(0, "-", "-", null, null, 0, 0, null));
 		for (Emple emple : empleados) {
 			dirField.addItem(emple);
 		}
