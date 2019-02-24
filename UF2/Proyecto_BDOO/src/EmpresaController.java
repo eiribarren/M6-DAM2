@@ -346,6 +346,21 @@ implements PanelBDOO.PanelBDOOListener
 			return false;
 		}
 		
+		/* Compruebo los campos del director ya que al importar desde MySQL
+		 * podrian no ser válidos
+		 */
+		if ( emple.getDir().getEmpNo() <= 0 || !comprobarCamposDirector(emple, emple.getDir())) {
+			emple.setDir(null);
+		} 
+		
+		if ( emple.getDept() == null ) {
+			mostrarInformacion("No se ha seleccionado ning�n departamento");
+			return false;
+		} else if ( emple.getDept().getDeptNo() <= 0 ) {
+			mostrarInformacion("No se ha seleccionado ning�n departamento");
+			return false;
+		}
+		
 		/* Compruebo si el departamento ya existe y le asigno ese al empleado */
 		criterio = Where.equal("deptNo", emple.getDept().getDeptNo());
 		query = new CriteriaQuery(Depart.class, criterio);
@@ -359,27 +374,12 @@ implements PanelBDOO.PanelBDOOListener
 			}
 		}
 		
-		if ( emple.getDept() == null ) {
-			mostrarInformacion("No se ha seleccionado ning�n departamento");
-			return false;
-		} else if ( emple.getDept().getDeptNo() <= 0 ) {
-			mostrarInformacion("No se ha seleccionado ning�n departamento");
-			return false;
-		}
-		
 		/* Si no tiene fecha de alta (Esto puede ocurrir al importar desde MySQL),
 		 * le añado una utilizando la fecha actual.
 		 */
 		if ( emple.getFechaAlt() == null ) {
 			emple.setFechaAlt(new Date(System.currentTimeMillis()));
 		}
-		
-		/* Compruebo los campos del director ya que al importar desde MySQL
-		 * podrian no ser válidos
-		 */
-		if ( emple.getDir().getEmpNo() <= 0 || !comprobarCamposDirector(emple, emple.getDir())) {
-			emple.setDir(null);
-		} 
 		
 		return true;
 	}
@@ -442,9 +442,15 @@ implements PanelBDOO.PanelBDOOListener
 			/* Buscamos en la base de datos a ver si ya existe el departamento
 			 * para evitar insertar un duplicado
 			 */
+			System.out.println(dir.getApellido());
+			System.out.println(departamento.size());
 			if (departamento.size() > 0) {
-				if (departamento.getFirst().getDnombre().equals(dir.getDept().getDnombre()))
+				System.out.println(departamento.getFirst().getDnombre());
+				if (departamento.getFirst().getDnombre().equals(dir.getDept().getDnombre())) {
 					dir.setDept(departamento.getFirst());
+				} else {
+					return false;
+				}
 			} else {
 				insertarDepartamento(dir.getDept());
 			}
