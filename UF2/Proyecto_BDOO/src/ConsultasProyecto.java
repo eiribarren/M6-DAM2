@@ -45,7 +45,7 @@ public class ConsultasProyecto extends PanelBDOO {
 
 	private void agregarBotonConsultaCuatro() {
 		consultaCuatro = new JButton();
-		consultaCuatro.setText("N˙mero de empleados en cada departamento");
+		consultaCuatro.setText("N√∫mero de empleados en cada departamento");
 		consultaCuatro.setFont(this.fuente);
 		consultaCuatro.addActionListener(new ActionListener() {
 			@Override
@@ -58,7 +58,7 @@ public class ConsultasProyecto extends PanelBDOO {
 
 	private void agregarBotonConsultaTres() {
 		consultaTres = new JButton();
-		consultaTres.setText("Empleados cuyo director es FERN¡NDEZ");
+		consultaTres.setText("Empleados cuyo director es FERN√ÅNDEZ");
 		consultaTres.setFont(this.fuente);
 		consultaTres.addActionListener(new ActionListener() {
 			@Override
@@ -71,7 +71,7 @@ public class ConsultasProyecto extends PanelBDOO {
 
 	private void agregarBotonConsultaDos() {
 		consultaDos = new JButton();
-		consultaDos.setText("N˙mero de empleados en VENTAS");
+		consultaDos.setText("N√∫mero de empleados en VENTAS");
 		consultaDos.setFont(this.fuente);
 		consultaDos.addActionListener(new ActionListener() {
 			@Override

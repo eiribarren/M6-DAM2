@@ -19,7 +19,7 @@ public class ImportarBaseDeDatos extends PanelBDOO {
 	public static final String _PUERTO_ = "Puerto";
 	public static final String _DB_ = "Base de datos";
 	public static final String _USUARIO_ = "Usuario";
-	public static final String _PASSWORD_ = "Contrase�a";
+	public static final String _PASSWORD_ = "Contraseña";
 	String[] textCampos = { "IP", "Puerto", "Base de datos", "Usuario", "Contrase�a"};
 	LinkedHashMap<String, Campo> campos;
 	JPanel formulario, mainPanel;

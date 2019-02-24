@@ -60,7 +60,7 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			controller.cargarUI();
 		} catch (Exception e) {
-			System.out.println("Ocurri� un error.");
+			System.out.println("Ocurrió un error.");
 			e.printStackTrace();
 			System.exit(-1);
 		}
@@ -119,7 +119,7 @@ implements PanelBDOO.PanelBDOOListener
 
 	private void prepararBotonDeAtras() {
 		atras = new JButton();
-		atras.setText(" ATR�S ");
+		atras.setText(" ATRÁS ");
 		atras.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -150,7 +150,7 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			mostrarPantalla(new MenuPrincipal(this, __FUENTE__));
 		} catch (Exception e) {
-			mostrarInformacion("Ocurri� un error");
+			mostrarInformacion("Ocurrió un error");
 		}
 	}
 
@@ -171,7 +171,7 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			mostrarPantalla(new InsertarEmple(this, __FUENTE__));
 		} catch (Exception e) {
-			mostrarInformacion("Ocurri� un error");
+			mostrarInformacion("Ocurrió un error");
 		}
 	}
 	
@@ -180,7 +180,7 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			mostrarPantalla(new InsertarDepart(this, __FUENTE__));
 		} catch (Exception e) {
-			mostrarInformacion("Ocurri� un error");
+			mostrarInformacion("Ocurrió un error");
 		}
 	}
 
@@ -189,7 +189,7 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			mostrarPantalla(new ConsultasProyecto(this, __FUENTE__));
 		} catch (Exception e) {
-			mostrarInformacion("Ocurri� un error");
+			mostrarInformacion("Ocurrió un error");
 		}
 	}
 
@@ -261,20 +261,20 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			empNo = Integer.parseInt(((JTextField)campos.get(Emple.__empNo__).campo).getText());
 		} catch ( NumberFormatException e ) {
-			mostrarInformacion("Valor no v�lido para empNo");
+			mostrarInformacion("Valor no válido para empNo");
 			return;
 		}
 		try {
 			comision = Float.parseFloat(((JTextField)campos.get(Emple.__comision__).campo).getText());
 		} catch ( NumberFormatException e ) {
-			mostrarInformacion("Valor no v�lido para comisi�n");
+			mostrarInformacion("Valor no válido para comisi�n");
 			return;
 		}
 		
 		try {
 			salario = Float.parseFloat(((JTextField)campos.get(Emple.__salario__).campo).getText());
 		} catch ( NumberFormatException e ) {
-			mostrarInformacion("Valor no v�lido para el salario");
+			mostrarInformacion("Valor no válido para el salario");
 			return;
 		}
 		
@@ -297,7 +297,7 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			deptNo = Integer.parseInt(((JTextField)campos.get(Depart.__deptNo__).campo).getText());
 		} catch ( NumberFormatException e ) {
-			mostrarInformacion("Valor no v�lido para deptNo");
+			mostrarInformacion("Valor no válido para deptNo");
 			return;
 		}
 		
@@ -328,7 +328,7 @@ implements PanelBDOO.PanelBDOOListener
 			odb.commit();
 			mostrarInformacion("Empleado insertado");
 		} catch (Exception e) {
-			mostrarInformacion("Ocurri� un error");
+			mostrarInformacion("Ocurrió un error");
 			e.printStackTrace();
 		}
 	}
@@ -354,10 +354,10 @@ implements PanelBDOO.PanelBDOOListener
 		} 
 		
 		if ( emple.getDept() == null ) {
-			mostrarInformacion("No se ha seleccionado ning�n departamento");
+			mostrarInformacion("No se ha seleccionado ningún departamento");
 			return false;
 		} else if ( emple.getDept().getDeptNo() <= 0 ) {
-			mostrarInformacion("No se ha seleccionado ning�n departamento");
+			mostrarInformacion("No se ha seleccionado ningún departamento");
 			return false;
 		}
 		
@@ -485,7 +485,7 @@ implements PanelBDOO.PanelBDOOListener
 			odb.commit();
 			mostrarInformacion("Departamento insertado");
 		} catch (Exception e) {
-			mostrarInformacion("Ocurri� un error");
+			mostrarInformacion("Ocurrió un error");
 			e.printStackTrace();
 		} finally {
 			
@@ -537,7 +537,7 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			mostrarPantalla(new ListaDeEmpleados(this, obtenerEmpleados(), __FUENTE__));
 		} catch (Exception e) {
-			mostrarInformacion("Ocurri� un error");
+			mostrarInformacion("Ocurrió un error");
 			e.printStackTrace();
 		}
 	}
@@ -547,7 +547,7 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			mostrarPantalla(new ListaDeDepartamentos(this, obtenerDepartamentos(), __FUENTE__));
 		} catch (Exception e) {
-			mostrarInformacion("Ocurri� un error");
+			mostrarInformacion("Ocurrió un error");
 			e.printStackTrace();
 		}
 	}
@@ -575,7 +575,7 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			mostrarPantalla(new ListaDeEmpleados(this, Arrays.copyOf(emples.toArray(), emples.size(), Emple[].class), __FUENTE__));
 		} catch (Exception e) {
-			mostrarInformacion("Ocurri� un error");
+			mostrarInformacion("Ocurrió un error");
 		} finally {
 			
 		}
@@ -607,7 +607,7 @@ implements PanelBDOO.PanelBDOOListener
 		Objects<Emple> emples = odb.getObjects(query);
 		
 		if (emples.size() == 0) {
-			mostrarInformacion("No hay ning�n empleado llamado FERNANDEZ");
+			mostrarInformacion("No hay ningún empleado llamado FERNANDEZ");
 			
 			return;
 		}
@@ -619,7 +619,7 @@ implements PanelBDOO.PanelBDOOListener
 		emples = odb.getObjects(query);
 		
 		if (emples.size() == 0) {
-			mostrarInformacion("No hay ning�n empleado cuyo director sea FERNANDEZ");
+			mostrarInformacion("No hay ningún empleado cuyo director sea FERNANDEZ");
 			
 			return;
 		}
@@ -627,7 +627,7 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			mostrarPantalla(new ListaDeEmpleados(this, Arrays.copyOf(emples.toArray(), emples.size(), Emple[].class), __FUENTE__));
 		} catch (Exception e) {
-			mostrarInformacion("Ocurri� un error");
+			mostrarInformacion("Ocurrió un error");
 		} finally {
 			
 		}
@@ -638,7 +638,7 @@ implements PanelBDOO.PanelBDOOListener
 		Objects<Depart> departamentos = odb.getObjects(Depart.class);
 		
 		if (departamentos.size() == 0) {
-			mostrarInformacion("No hay ning�n departamento creado");
+			mostrarInformacion("No hay ningún departamento creado");
 			
 			return;
 		}
@@ -679,7 +679,7 @@ implements PanelBDOO.PanelBDOOListener
 		try {
 			mostrarPantalla(new ImportarBaseDeDatos(this, __FUENTE__));
 		} catch (Exception e) {
-			mostrarInformacion("Ocurri� un error");
+			mostrarInformacion("Ocurrió un error");
 		}
 	}
 	
@@ -692,7 +692,7 @@ implements PanelBDOO.PanelBDOOListener
 			List<Emple> emples = obtenerEmpleadosMysql(ip, puerto, db, usuario, password);
 			mostrarPantalla(new ConexionConDB(this, Arrays.copyOf(emples.toArray(), emples.size(), Emple[].class)));
 		} catch (Exception e) {
-			mostrarInformacion("Ocurri� un error");
+			mostrarInformacion("Ocurrió un error");
 		}
 	}
 	
@@ -759,10 +759,10 @@ implements PanelBDOO.PanelBDOOListener
 									 obtenerDepartamentoParaImportar(conexion, result.getInt("dept_no"))));
 		}
 		} catch (ClassNotFoundException e) {
-			mostrarInformacion("No est� instalado el driver JDBC");
+			mostrarInformacion("No está instalado el driver JDBC");
 			e.printStackTrace();
 		} catch (SQLException e) {
-			mostrarInformacion("Ocurri� un error sql");
+			mostrarInformacion("Ocurrió un error sql");
 			e.printStackTrace();
 		} finally {
 			if (conexion != null) {

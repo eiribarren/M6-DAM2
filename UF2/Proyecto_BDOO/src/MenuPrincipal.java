@@ -119,7 +119,7 @@ public class MenuPrincipal extends PanelBDOO {
 	private void agregarTextoPrincipal() {
 		textoPrincipal = new JLabel();
 		textoPrincipal.setAlignmentX(CENTER_ALIGNMENT);
-		textoPrincipal.setText("Selecciona una acci�n");
+		textoPrincipal.setText("Selecciona una acción");
 		textoPrincipal.setFont(this.fuente);
 		this.add(textoPrincipal);
 	}
