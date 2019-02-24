@@ -1,6 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,6 +44,19 @@ import com.sun.glass.events.WindowEvent;
 
 import objetos.Depart;
 import objetos.Emple;
+import pantallas.Campo;
+import pantallas.ConexionConDB;
+import pantallas.ConsultasProyecto;
+import pantallas.EliminarEmpleado;
+import pantallas.EmptyPanel;
+import pantallas.ImportarBaseDeDatos;
+import pantallas.InsertarDepart;
+import pantallas.InsertarEmple;
+import pantallas.ListaDeDepartamentos;
+import pantallas.ListaDeEmpleados;
+import pantallas.MenuPrincipal;
+import pantallas.ModificarSalario;
+import pantallas.PanelBDOO;
 
 public class ProyectoBDOO 
 implements PanelBDOO.PanelBDOOListener
@@ -563,7 +578,6 @@ implements PanelBDOO.PanelBDOOListener
 		Objects<Depart> departamentos = odb.getObjects(query);
 		if (departamentos.size() == 0) {
 			mostrarInformacion("El departamento 10 no existe");
-			
 			return;
 		}
 		
@@ -572,22 +586,33 @@ implements PanelBDOO.PanelBDOOListener
 		query = new CriteriaQuery(Emple.class, criterio);
 		Objects<Emple> emples = odb.getObjects(query);
 		
+		if (emples.size() == 0 ) {
+			mostrarInformacion("No hay ningún empleado en el departamento 10");
+			return;
+		}
 		JPanel info = new JPanel();
-		info.setLayout(new GridLayout(0,1));
+		info.setLayout(new BoxLayout(info, BoxLayout.PAGE_AXIS));
 		JScrollPane scrollPane = new JScrollPane(info, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		while (emples.hasNext()) {
 			Emple emple = emples.next();
 			JLabel texto = new JLabel(emple.getApellido());
+			texto.setPreferredSize(new Dimension((int)(mainFrame.getWidth()/1.2f),__FUENTE__.getSize()));
 			texto.setFont(__FUENTE__);
 			info.add(texto);
 		}
 		
-		JPanel panel = new JPanel(new GridLayout(0,1));
+		JPanel panel = new JPanel(new GridBagLayout());
 		JLabel titulo = new JLabel("Apellidos de los empleados del departamento 10");
 		titulo.setFont(__FUENTE__);
-		panel.add(titulo);
-		panel.add(scrollPane);
+		scrollPane.setPreferredSize(new Dimension((int)(mainFrame.getWidth()/1.2f),mainFrame.getHeight()/2));
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridy = 0;
+		c.weighty = 0.2;
+		panel.add(titulo, c);
+		c.gridy = 1;
+		c.weighty = 1;
+		panel.add(scrollPane, c);
 		mostrarPanel(panel);
 	}
 
@@ -630,15 +655,33 @@ implements PanelBDOO.PanelBDOOListener
 		
 		if (emples.size() == 0) {
 			mostrarInformacion("No hay ningún empleado cuyo director sea FERNANDEZ");
-			
 			return;
 		}
 		
-		try {
-			mostrarPantalla(new ListaDeEmpleados(this, Arrays.copyOf(emples.toArray(), emples.size(), Emple[].class), __FUENTE__));
-		} catch (Exception e) {
-			mostrarInformacion("Ocurrió un error");
+		JPanel info = new JPanel();
+		info.setLayout(new BoxLayout(info, BoxLayout.PAGE_AXIS));
+		JScrollPane scrollPane = new JScrollPane(info, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		while (emples.hasNext()) {
+			Emple emple = emples.next();
+			JLabel texto = new JLabel(emple.getApellido());
+			texto.setFont(__FUENTE__);
+			texto.setPreferredSize(new Dimension((int)(mainFrame.getWidth()/1.2f),__FUENTE__.getSize()));
+			info.add(texto);
 		}
+		
+		JPanel panel = new JPanel(new GridBagLayout());
+		JLabel titulo = new JLabel("Apellidos de los empleados cuyo director es Fernández");
+		scrollPane.setPreferredSize(new Dimension((int)(mainFrame.getWidth()/1.2f),mainFrame.getHeight()/2));
+		
+		titulo.setFont(__FUENTE__);
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridy = 0;
+		panel.add(titulo, c);
+		c.gridy = 1;
+		panel.add(scrollPane, c);
+		mostrarPanel(panel);
+		
 	}
 
 	@Override
@@ -652,7 +695,7 @@ implements PanelBDOO.PanelBDOOListener
 		}
 		
 		JPanel info = new JPanel();
-		info.setLayout(new GridLayout(0,1));
+		info.setLayout(new BoxLayout(info, BoxLayout.PAGE_AXIS));
 		JScrollPane scrollPane = new JScrollPane(info, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		while (departamentos.hasNext()) {
@@ -662,14 +705,19 @@ implements PanelBDOO.PanelBDOOListener
 			BigInteger numeroEmpleados = odb.count(query);
 			JLabel texto = new JLabel(depart.getDnombre() + ": " + numeroEmpleados);
 			texto.setFont(__FUENTE__);
+			texto.setPreferredSize(new Dimension((int)(mainFrame.getWidth()/1.2f),__FUENTE__.getSize()));
 			info.add(texto);
 		}
 		
-		JPanel panel = new JPanel(new GridLayout(0,1));
+		JPanel panel = new JPanel(new GridBagLayout());
+		scrollPane.setPreferredSize(new Dimension((int)(mainFrame.getWidth()/1.2f),mainFrame.getHeight()/2));
 		JLabel titulo = new JLabel("Número de empleados por departamento");
 		titulo.setFont(__FUENTE__);
-		panel.add(titulo);
-		panel.add(scrollPane);
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridy = 0;
+		panel.add(titulo, c);
+		c.gridy = 1;
+		panel.add(scrollPane, c);
 		mostrarPanel(panel);
 	}
 

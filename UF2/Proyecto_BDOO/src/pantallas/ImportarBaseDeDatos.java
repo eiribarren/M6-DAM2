@@ -1,3 +1,4 @@
+package pantallas;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -20,7 +21,7 @@ public class ImportarBaseDeDatos extends PanelBDOO {
 	public static final String _DB_ = "Base de datos";
 	public static final String _USUARIO_ = "Usuario";
 	public static final String _PASSWORD_ = "Contraseña";
-	String[] textCampos = { "IP", "Puerto", "Base de datos", "Usuario", "Contrase�a"};
+	String[] textCampos = { "IP", "Puerto", "Base de datos", "Usuario", "Contraseña"};
 	LinkedHashMap<String, Campo> campos;
 	JPanel formulario, mainPanel;
 	JButton conectarConDB;
@@ -42,7 +43,7 @@ public class ImportarBaseDeDatos extends PanelBDOO {
 	}
 	
 	@Override
-	void cargarUI() {
+	public void cargarUI() {
 		if (isLoaded)
 			return;
 		

@@ -1,3 +1,4 @@
+package pantallas;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ public abstract class PanelBDOO extends JPanel {
 	protected boolean isLoaded = false;
 	public PanelBDOO anterior;
 	
-	abstract void cargarUI();
+	public abstract void cargarUI();
 	
 	public interface PanelBDOOListener {
 		void insertarCamposDepart(HashMap<String, Campo> campos);
