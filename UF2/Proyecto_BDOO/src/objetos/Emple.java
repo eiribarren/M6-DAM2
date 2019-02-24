@@ -1,5 +1,8 @@
 package objetos;
 
+/* +===================================================================+ *
+ * |      PRIMERA PARTE: MONTAR LA ESTRUCTURA DE LA BASE DE DATOS      | * 
+ * +===================================================================+ */
 public class Emple {
 	public static final String __empNo__ = "empNo";
 	public static final String __apellido__ = "Apellido";

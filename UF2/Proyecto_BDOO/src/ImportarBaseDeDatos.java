@@ -61,7 +61,7 @@ public class ImportarBaseDeDatos extends PanelBDOO {
 		conectarConDB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				listener.mostrarConexionConDB(((JTextField)campos.get(_IP_).campo).getText(),
+				listener.mostrarListaDeEmpleadosImportacion(((JTextField)campos.get(_IP_).campo).getText(),
 											  ((JTextField)campos.get(_PUERTO_).campo).getText(),
 											  ((JTextField)campos.get(_DB_).campo).getText(),
 											  ((JTextField)campos.get(_USUARIO_).campo).getText(),

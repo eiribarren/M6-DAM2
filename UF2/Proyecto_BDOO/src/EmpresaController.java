@@ -97,6 +97,7 @@ implements PanelBDOO.PanelBDOOListener
 			@Override
 			public void windowOpened(java.awt.event.WindowEvent e) {
 			}
+			// Cierro la base de datos cuando se cierra el programa
 			@Override
 			public void windowClosing(java.awt.event.WindowEvent e) {
 				if (odb != null)
@@ -144,7 +145,7 @@ implements PanelBDOO.PanelBDOOListener
 		mainFrame.getJMenuBar().add(inicio);
 	}
 
-	//Metodos para actualizar la pantalla
+	//Metodos para cambiar de pantalla
 	private void mostrarMenuPrincipal() {
 		try {
 			mostrarPantalla(new MenuPrincipal(this, __FUENTE__));
@@ -184,26 +185,6 @@ implements PanelBDOO.PanelBDOOListener
 	}
 
 	@Override
-	public void mostrarListaDeEmpleados() {
-		try {
-			mostrarPantalla(new ListaDeEmpleados(this, obtenerEmpleados(), __FUENTE__));
-		} catch (Exception e) {
-			mostrarInformacion("Ocurri� un error");
-			e.printStackTrace();
-		}
-	}
-	
-	@Override
-	public void mostrarListaDeDepartamentos() {
-		try {
-			mostrarPantalla(new ListaDeDepartamentos(this, obtenerDepartamentos(), __FUENTE__));
-		} catch (Exception e) {
-			mostrarInformacion("Ocurri� un error");
-			e.printStackTrace();
-		}
-	}
-	
-	@Override
 	public void mostrarConsultasProyecto() {
 		try {
 			mostrarPantalla(new ConsultasProyecto(this, __FUENTE__));
@@ -220,60 +201,7 @@ implements PanelBDOO.PanelBDOOListener
 		statusBar.repaint();
 		mainFrame.revalidate();
 	}
-
-	@Override
-	public void mostrarImportarBaseDeDatos() {
-		try {
-			mostrarPantalla(new ImportarBaseDeDatos(this, __FUENTE__));
-		} catch (Exception e) {
-			mostrarInformacion("Ocurri� un error");
-		}
-	}
 	
-	@Override
-	public void mostrarConexionConDB(String ip, String puerto, String db, String usuario, String password) {
-		Connection conexion = null;
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			
-			conexion = DriverManager.getConnection("jdbc:mysql://" + ip + ":" + puerto + "/" + db,
-															   usuario, 
-															   password);
-			Statement sentencia = conexion.createStatement();
-			String sql = "SELECT * FROM emple ORDER BY emp_no";
-			ResultSet result = sentencia.executeQuery(sql);
-			List<Emple> emples = new ArrayList<Emple>();
-			while(result.next()) {
-				emples.add(new Emple(result.getInt("emp_no"),
-									 result.getString("apellido"),
-									 result.getString("oficio"),
-									 obtenerDirectorParaImportar(conexion, result.getInt("dir")),
-									 result.getDate("fecha_alt"),
-									 result.getFloat("salario"),
-									 result.getFloat("comision"),
-									 obtenerDepartamentoParaImportar(conexion, result.getInt("dept_no"))));
-			}
-			
-			mostrarPantalla(new ConexionConDB(this, Arrays.copyOf(emples.toArray(), emples.size(), Emple[].class)));
-		} catch (ClassNotFoundException e) {
-			mostrarInformacion("No est� instalado el driver JDBC");
-			e.printStackTrace();
-		} catch (SQLException e) {
-			mostrarInformacion("Ocurri� un error sql");
-			e.printStackTrace();
-		} catch (Exception e) {
-			mostrarInformacion("Ocurri� un error");
-		} finally {
-			if (conexion != null) {
-				try {
-					conexion.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-		
 	@Override
 	public void mostrarModificarSalario() {
 		try {
@@ -306,7 +234,9 @@ implements PanelBDOO.PanelBDOOListener
 		mainFrame.revalidate();
 	}
 
-	//Metodos para obtener los datos del formulario
+	/* Metodos para obtener los datos del formulario y prepararlos para
+	 * meterlos en la base de datos
+	 */
 	@Override
 	public void insertarCamposEmple(HashMap<String, Campo> campos) {
 		if (!(campos.get(Emple.__empNo__).campo instanceof JTextField) ||
@@ -373,58 +303,60 @@ implements PanelBDOO.PanelBDOOListener
 		
 		insertarDepartamento(new Depart(deptNo, dNombre, loc));
 	}
-
+	
+	/*  |																  |  * 					 
+	 *  |			ESTOS METODOS SON LAS PARTES DEL PROYECTO   		  |  *	  					 
+	 *  V																  V  *					 
+	 * +===================================================================+ *
+	 * | 				SEGUNDA PARTE: INSERTAR OBJETOS                    | *
+	 * +===================================================================+ */
+	
 	//Metodos para insertar en la base de datos
 	@Override
 	public void insertarEmpleado(Emple emple) {
+		/* Compruebo que todos los campos del empleado sean válidos
+		 * si no lo son salgo de la función y no hago nada
+		 */
 		if (!comprobarCamposEmpleado(emple)) {
-			
 			return;
 		};
 		
 		ICriterion criterio;
 		CriteriaQuery query;
 		try {
-			if (emple.getDir() != null ) {
-				criterio = Where.equal("empNo", emple.getDir().getEmpNo());
-				query = new CriteriaQuery(Emple.class, criterio);
-				Objects<Emple> director = odb.getObjects(query);
-				if (director.size() > 0) {
-					emple.setDir(director.getFirst());
-				} 
-			}
-			
-			criterio = Where.equal("deptNo", emple.getDept().getDeptNo());
-			query = new CriteriaQuery(Depart.class, criterio);
-			Objects<Depart> departamento = odb.getObjects(query);
-			if (departamento.size() > 0) {
-				emple.setDept(departamento.getFirst());
-			}
-			
 			odb.store(emple);
 			odb.commit();
 			mostrarInformacion("Empleado insertado");
 		} catch (Exception e) {
 			mostrarInformacion("Ocurri� un error");
 			e.printStackTrace();
-		} finally {
-			
 		}
 	}
 
 	private boolean comprobarCamposEmpleado(Emple emple) {
+		ICriterion criterio;
+		CriteriaQuery query;
 		if (emple.getEmpNo() <= 0) {
 			mostrarInformacion("El empNo debe ser mayor que 0");
 			return false;
 		}
 		
-		if ( emple.getDir().getEmpNo() <= 0 || !comprobarCamposDirector(emple, emple.getDir())) {
-			emple.setDir(null);
-		} 
-		
 		if ( comprobarSiEmpleExiste(emple.getEmpNo(), emple.getApellido()) ) {
 			mostrarInformacion("El empNo o apellido ya existe");
 			return false;
+		}
+		
+		/* Compruebo si el departamento ya existe y le asigno ese al empleado */
+		criterio = Where.equal("deptNo", emple.getDept().getDeptNo());
+		query = new CriteriaQuery(Depart.class, criterio);
+		Objects<Depart> departamento = odb.getObjects(query);
+		if (departamento.size() > 0) {
+			if (emple.getDept().getDnombre().equals(departamento.getFirst().getDnombre())) {
+				emple.setDept(departamento.getFirst());
+			} else {
+				mostrarInformacion("Ya hay un departamento con ese deptNo");
+				return false;
+			}
 		}
 		
 		if ( emple.getDept() == null ) {
@@ -435,50 +367,92 @@ implements PanelBDOO.PanelBDOOListener
 			return false;
 		}
 		
+		/* Si no tiene fecha de alta (Esto puede ocurrir al importar desde MySQL),
+		 * le añado una utilizando la fecha actual.
+		 */
 		if ( emple.getFechaAlt() == null ) {
 			emple.setFechaAlt(new Date(System.currentTimeMillis()));
 		}
 		
+		/* Compruebo los campos del director ya que al importar desde MySQL
+		 * podrian no ser válidos
+		 */
+		if ( emple.getDir().getEmpNo() <= 0 || !comprobarCamposDirector(emple, emple.getDir())) {
+			emple.setDir(null);
+		} 
+		
 		return true;
 	}
 
+	// Si esta función devuelve false no se importará el director
 	private boolean comprobarCamposDirector(Emple emple, Emple dir) {
+		ICriterion criterio;
+		CriteriaQuery query;
+		// El empNo podria ser 0 si el empleado no tiene director
 		if ( dir.getEmpNo() <= 0) {
 			return false;
 		} else {
-			ICriterion criterio = Where.equal("empNo", dir.getEmpNo());
-			CriteriaQuery query = new CriteriaQuery(Emple.class, criterio);
+			/* Busco en la base de datos a ver si ya existe el director ya
+			 * que podria no existir si importamos un empleado de MySQL y no
+			 * a su director.
+			 */
+			criterio = Where.equal("empNo", dir.getEmpNo());
+			query = new CriteriaQuery(Emple.class, criterio);
 			Objects<Emple> empleados = odb.getObjects(query);
 			if (empleados.size() > 0) {
 				Emple empleado = empleados.getFirst();
+				/* Si encontramos un empleado con el mismo empNo que el director
+				 * comprobamos que tienen el mismo apellido, si no lo tuvieran
+				 * no importamos el director (No es muy buena idea pero no
+				 * quiero perder más tiempo en esta parte)
+				 */
 				if (!(empleado.getApellido().equals(dir.getApellido()))) {
 					return false;
 				} else {
+					/* Asignamos el director obtenido de la base de datos al 
+					 * empleado, si dejo el director que ya tenía se duplicará
+					 * la entrada porque tienen diferentes identificadores de
+					 * objeto a pesar de tener los mismos datos
+					 */
 					emple.setDir(empleado);
 					return true;
 				}
 			}
 		}
 		
+		/* Comprobamos los campos del director del director y asi 
+		 * recursivamente
+		 */
 		if (!comprobarCamposDirector(dir, dir.getDir())) {
 			dir.setDir(null);
 		}
 		
+		/* Comprobamos que tiene departamento, en mi caso he decidido que es
+		 * obligatorio tener un departamento para insertar el empleado
+		 */
 		if ( dir.getDept() == null ) {
 			return false;
 		} else if ( dir.getDept().getDeptNo() <= 0 ) {
 			return false;
 		} else {
-			ICriterion criterio = Where.equal("deptNo", dir.getDept().getDeptNo());
-			CriteriaQuery query = new CriteriaQuery(Depart.class, criterio);
+			criterio = Where.equal("deptNo", dir.getDept().getDeptNo());
+			query = new CriteriaQuery(Depart.class, criterio);
 			Objects<Depart> departamento = odb.getObjects(query);
+			
+			/* Buscamos en la base de datos a ver si ya existe el departamento
+			 * para evitar insertar un duplicado
+			 */
 			if (departamento.size() > 0) {
-				dir.setDept(departamento.getFirst());
+				if (departamento.getFirst().getDnombre().equals(dir.getDept().getDnombre()))
+					dir.setDept(departamento.getFirst());
 			} else {
 				insertarDepartamento(dir.getDept());
 			}
 		}
 		
+		/* Si no tiene fecha de alta (Esto puede ocurrir al importar desde MySQL),
+		 * le añado una utilizando la fecha actual.
+		 */
 		if ( dir.getFechaAlt() == null ) {
 			dir.setFechaAlt(new Date(System.currentTimeMillis()));
 		}
@@ -531,6 +505,10 @@ implements PanelBDOO.PanelBDOOListener
 		return false;
 	}
 
+	/* +===================================================================+ *
+	 * |   SEGUNDA PARTE: VISUALIZAR TODOS LOS DEPARTAMENTOS Y EMPLEADOS   | *
+	 * +===================================================================+ */
+	
 	//Metodos para obtener una lista de los empleados
 	@Override
 	public Emple[] obtenerEmpleados() {
@@ -547,8 +525,31 @@ implements PanelBDOO.PanelBDOOListener
 		
 		return Arrays.copyOf(depts.toArray(), depts.size(), Depart[].class);
 	}
+
+	@Override
+	public void mostrarListaDeEmpleados() {
+		try {
+			mostrarPantalla(new ListaDeEmpleados(this, obtenerEmpleados(), __FUENTE__));
+		} catch (Exception e) {
+			mostrarInformacion("Ocurri� un error");
+			e.printStackTrace();
+		}
+	}
 	
-	//Metodos para realizar las consultas de la tercera parte del proyecto
+	@Override
+	public void mostrarListaDeDepartamentos() {
+		try {
+			mostrarPantalla(new ListaDeDepartamentos(this, obtenerDepartamentos(), __FUENTE__));
+		} catch (Exception e) {
+			mostrarInformacion("Ocurri� un error");
+			e.printStackTrace();
+		}
+	}
+	
+	/* +===================================================================+ *
+	 * |                     TERCERA PARTE: CONSULTAS                      | * 
+	 * +===================================================================+ */
+	
 	@Override
 	public void consultaEmpleadosDept10() {
 		ICriterion criterio = Where.equal("deptNo", 10);
@@ -658,7 +659,41 @@ implements PanelBDOO.PanelBDOOListener
 		mostrarPanel(panel);
 	}
 
-	//Metodos de importacion
+	/* +===================================================================+ *
+	 * |                  CUARTA PARTE: IMPORTACIÓN MYSQL                  | * 
+	 * +===================================================================+ * 
+	 *  Para insertar en la base de datos se aprobechan los metodos de 		 *
+	 *  inserción de la segunda parte										 */
+	
+	/* Muestra el formulario donde se introducen los datos de conexión con
+	 * la base de datos MySQL
+	 */
+	@Override
+	public void mostrarFormularioBaseDeDatos() {
+		try {
+			mostrarPantalla(new ImportarBaseDeDatos(this, __FUENTE__));
+		} catch (Exception e) {
+			mostrarInformacion("Ocurri� un error");
+		}
+	}
+	
+	/* Muestra la lista de empleados de la base de datos MySQL y nos permite
+	 * seleccionar para importar
+	 */
+	@Override
+	public void mostrarListaDeEmpleadosImportacion(String ip, String puerto, String db, String usuario, String password) {
+		try {
+			List<Emple> emples = obtenerEmpleadosMysql(ip, puerto, db, usuario, password);
+			mostrarPantalla(new ConexionConDB(this, Arrays.copyOf(emples.toArray(), emples.size(), Emple[].class)));
+		} catch (Exception e) {
+			mostrarInformacion("Ocurri� un error");
+		}
+	}
+	
+	/* Como en MySQL se guarda solo el empNo del director en el empleado tenemos
+	 * que conseguir los datos del director y convertirlo en un objeto de tipo
+	 * Emple
+	 */
 	public Emple obtenerDirectorParaImportar(Connection conexion, int empNo) throws SQLException {
 		Emple dir = new Emple(0,"-","-",null,null, 0f,0f,null);
 		
@@ -679,6 +714,7 @@ implements PanelBDOO.PanelBDOOListener
 		return dir;
 	}
 	
+	/* Lo mismo que pasaba con el director pasa con el departamento */
 	public Depart obtenerDepartamentoParaImportar(Connection conexion, int deptNo) throws SQLException{
 		Depart depart = new Depart(0, "-", "-");
 		
@@ -693,7 +729,53 @@ implements PanelBDOO.PanelBDOOListener
 		
 		return depart;
 	}
-
+	
+	private List<Emple> obtenerEmpleadosMysql(String ip, String puerto, String db, String usuario, String password) {
+		Connection conexion = null;
+		List<Emple> emples = new ArrayList<Emple>();
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			conexion = DriverManager.getConnection("jdbc:mysql://" + ip + ":" + puerto + "/" + db,
+															   usuario, 
+															   password);
+			Statement sentencia = conexion.createStatement();
+			String sql = "SELECT * FROM emple ORDER BY emp_no";
+			ResultSet result = sentencia.executeQuery(sql);
+			while(result.next()) {
+				emples.add(new Emple(result.getInt("emp_no"),
+									 result.getString("apellido"),
+									 result.getString("oficio"),
+									 obtenerDirectorParaImportar(conexion, result.getInt("dir")),
+									 result.getDate("fecha_alt"),
+									 result.getFloat("salario"),
+									 result.getFloat("comision"),
+									 obtenerDepartamentoParaImportar(conexion, result.getInt("dept_no"))));
+		}
+		} catch (ClassNotFoundException e) {
+			mostrarInformacion("No est� instalado el driver JDBC");
+			e.printStackTrace();
+		} catch (SQLException e) {
+			mostrarInformacion("Ocurri� un error sql");
+			e.printStackTrace();
+		} finally {
+			if (conexion != null) {
+				try {
+					conexion.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return emples;
+	}
+	
+	/* +====================================================================+ *
+	 * |                    QUINTA PARTE: MODIFICACIÓN                      | *
+	 * +====================================================================+ */
+	
+	//Metodos para modificar en la base de datos
 	@Override
 	public void modificarSalario(String apellido, String salario) {
 		float salarioFloat;
@@ -738,5 +820,5 @@ implements PanelBDOO.PanelBDOOListener
 		odb.delete(emple);
 		mostrarInformacion("Se eliminó el empleado " + apellido);
 	}
-
+	
 }

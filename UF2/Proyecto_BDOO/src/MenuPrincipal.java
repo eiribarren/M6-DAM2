@@ -164,7 +164,7 @@ public class MenuPrincipal extends PanelBDOO {
 		importarBaseDeDatos.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				listener.mostrarImportarBaseDeDatos();
+				listener.mostrarFormularioBaseDeDatos();
 			}
 		});
 		botonesPanel.add(importarBaseDeDatos);

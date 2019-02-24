@@ -36,8 +36,8 @@ public abstract class PanelBDOO extends JPanel {
 		void mostrarListaDeEmpleados();
 		void mostrarListaDeDepartamentos();
 		void mostrarConsultasProyecto();
-		void mostrarImportarBaseDeDatos();
-		void mostrarConexionConDB(String ip, String puerto, String db, String usuario, String password);
+		void mostrarFormularioBaseDeDatos();
+		void mostrarListaDeEmpleadosImportacion(String ip, String puerto, String db, String usuario, String password);
 		void mostrarModificarSalario();
 		void mostrarEliminarEmpleado();
 	}
