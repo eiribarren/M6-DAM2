@@ -43,7 +43,7 @@ import com.sun.glass.events.WindowEvent;
 import objetos.Depart;
 import objetos.Emple;
 
-public class EmpresaController 
+public class ProyectoBDOO 
 implements PanelBDOO.PanelBDOOListener
 {
 
@@ -56,7 +56,7 @@ implements PanelBDOO.PanelBDOOListener
 	public static final Font __FUENTE__ = new Font("Tahoma", Font.PLAIN, 30);
 	
 	public static void main(String[] args) {
-		EmpresaController controller = new EmpresaController();
+		ProyectoBDOO controller = new ProyectoBDOO();
 		try {
 			controller.cargarUI();
 		} catch (Exception e) {
@@ -66,7 +66,7 @@ implements PanelBDOO.PanelBDOOListener
 		}
 	}
 	
-	public EmpresaController() {
+	public ProyectoBDOO() {
 		this.odb = ODBFactory.open(__DB__);
 	}
 	
@@ -572,13 +572,23 @@ implements PanelBDOO.PanelBDOOListener
 		query = new CriteriaQuery(Emple.class, criterio);
 		Objects<Emple> emples = odb.getObjects(query);
 		
-		try {
-			mostrarPantalla(new ListaDeEmpleados(this, Arrays.copyOf(emples.toArray(), emples.size(), Emple[].class), __FUENTE__));
-		} catch (Exception e) {
-			mostrarInformacion("Ocurrió un error");
-		} finally {
-			
+		JPanel info = new JPanel();
+		info.setLayout(new GridLayout(0,1));
+		JScrollPane scrollPane = new JScrollPane(info, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		while (emples.hasNext()) {
+			Emple emple = emples.next();
+			JLabel texto = new JLabel(emple.getApellido());
+			texto.setFont(__FUENTE__);
+			info.add(texto);
 		}
+		
+		JPanel panel = new JPanel(new GridLayout(0,1));
+		JLabel titulo = new JLabel("Apellidos de los empleados del departamento 10");
+		titulo.setFont(__FUENTE__);
+		panel.add(titulo);
+		panel.add(scrollPane);
+		mostrarPanel(panel);
 	}
 
 	@Override
@@ -628,8 +638,6 @@ implements PanelBDOO.PanelBDOOListener
 			mostrarPantalla(new ListaDeEmpleados(this, Arrays.copyOf(emples.toArray(), emples.size(), Emple[].class), __FUENTE__));
 		} catch (Exception e) {
 			mostrarInformacion("Ocurrió un error");
-		} finally {
-			
 		}
 	}
 
@@ -658,7 +666,7 @@ implements PanelBDOO.PanelBDOOListener
 		}
 		
 		JPanel panel = new JPanel(new GridLayout(0,1));
-		JLabel titulo = new JLabel("N�mero de empleados por departamento");
+		JLabel titulo = new JLabel("Número de empleados por departamento");
 		titulo.setFont(__FUENTE__);
 		panel.add(titulo);
 		panel.add(scrollPane);
