@@ -39,9 +39,9 @@ public class GeneraZona {
 			consulta.bindInt(new QName("x"), zona, null);
 			resultado = consulta.executeQuery();
 			FileWriter fw = new FileWriter(new File("zona" + String.valueOf(args[0]) + ".xml"));
-			fw.write("<zona id=\"" + zona + "\">");
+			fw.write("<zona id=\"" + zona + "\">\n");
 			while (resultado.next()) {
-				fw.write(resultado.getItemAsString(null));
+				fw.write("\t" + resultado.getItemAsString(null) + "\n");
 			}
 			fw.write("</zona>");
 			fw.close();

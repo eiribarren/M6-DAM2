@@ -25,7 +25,7 @@ public class MostrarEmpleado {
 			consulta.bindString(new QName("x"), tipoDepartamento, null);
 			resultado = consulta.executeQuery();
 			if (!resultado.next()) {
-				System.out.println("No existe ese tipo de departamento");
+				System.out.println("No existe ese tipo de departamento o no tiene empleados");
 				System.exit(0);
 			} else {
 				do {
