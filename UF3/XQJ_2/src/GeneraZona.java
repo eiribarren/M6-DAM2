@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -38,10 +39,14 @@ public class GeneraZona {
 											  "    </produc>");
 			consulta.bindInt(new QName("x"), zona, null);
 			resultado = consulta.executeQuery();
-			FileWriter fw = new FileWriter(new File("zona" + String.valueOf(args[0]) + ".xml"));
-			fw.write("<zona id=\"" + zona + "\">\n");
+			BufferedWriter fw = new BufferedWriter(new FileWriter("zona" + String.valueOf(args[0]) + ".xml"));
+			fw.write("<?xml version='1.0' encoding='UTF-8'?>");
+			fw.newLine();
+			fw.write("<zona id=\"" + zona + "\">");
+			fw.newLine();
 			while (resultado.next()) {
-				fw.write("\t" + resultado.getItemAsString(null) + "\n");
+				fw.write("\t" + resultado.getItemAsString(null));
+				fw.newLine();
 			}
 			fw.write("</zona>");
 			fw.close();
