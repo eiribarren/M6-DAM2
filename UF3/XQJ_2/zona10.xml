@@ -1,0 +1,29 @@
+<zona id="10"><produc>
+        <cod_prod xmlns="">1010</cod_prod>
+        <denominacion xmlns="">Placa Base MSI G41M-P26</denominacion>
+        <precio xmlns="">50</precio>
+        <nombre_zona xmlns="">Madrid-CENTRO</nombre_zona>
+        <director xmlns="">Pedro Martín</director>
+        <stock xmlns="">7</stock>
+    </produc><produc>
+        <cod_prod xmlns="">1011</cod_prod>
+        <denominacion xmlns="">Micro Intel Core i5-2320</denominacion>
+        <precio xmlns="">120</precio>
+        <nombre_zona xmlns="">Madrid-CENTRO</nombre_zona>
+        <director xmlns="">Pedro Martín</director>
+        <stock xmlns="">-2</stock>
+    </produc><produc>
+        <cod_prod xmlns="">1019</cod_prod>
+        <denominacion xmlns="">Memoria DDR3 G.Skill 2GB</denominacion>
+        <precio xmlns="">10</precio>
+        <nombre_zona xmlns="">Madrid-CENTRO</nombre_zona>
+        <director xmlns="">Pedro Martín</director>
+        <stock xmlns="">2</stock>
+    </produc><produc>
+        <cod_prod xmlns="">1020</cod_prod>
+        <denominacion xmlns="">Memoria DDR3 G.Skill 4GB</denominacion>
+        <precio xmlns="">30</precio>
+        <nombre_zona xmlns="">Madrid-CENTRO</nombre_zona>
+        <director xmlns="">Pedro Martín</director>
+        <stock xmlns="">20</stock>
+    </produc></zona>
