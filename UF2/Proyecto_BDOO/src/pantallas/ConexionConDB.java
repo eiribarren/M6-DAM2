@@ -1,3 +1,4 @@
+package pantallas;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -39,7 +40,11 @@ public class ConexionConDB extends PanelBDOO {
 	}
 	
 	@Override
-	void cargarUI() {
+	public void cargarUI() {
+		if (isLoaded)
+			return;
+		
+		isLoaded = true;
 		agregarTitulo();
 		agregarListaDeEmpleados();
 		agregarBotonDeseleccionar();

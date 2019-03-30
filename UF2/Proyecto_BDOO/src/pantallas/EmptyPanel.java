@@ -1,3 +1,4 @@
+package pantallas;
 import javax.swing.JPanel;
 
 public class EmptyPanel extends PanelBDOO {
@@ -7,7 +8,7 @@ public class EmptyPanel extends PanelBDOO {
 	}
 	
 	@Override
-	void cargarUI() {
+	public void cargarUI() {
 		// TODO Auto-generated method stub
 
 	}

@@ -1,3 +1,4 @@
+package pantallas;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -19,8 +20,8 @@ public class ImportarBaseDeDatos extends PanelBDOO {
 	public static final String _PUERTO_ = "Puerto";
 	public static final String _DB_ = "Base de datos";
 	public static final String _USUARIO_ = "Usuario";
-	public static final String _PASSWORD_ = "Contraseña";
-	String[] textCampos = { "IP", "Puerto", "Base de datos", "Usuario", "Contraseña"};
+	public static final String _PASSWORD_ = "ContraseÃ±a";
+	String[] textCampos = { "IP", "Puerto", "Base de datos", "Usuario", "ContraseÃ±a"};
 	LinkedHashMap<String, Campo> campos;
 	JPanel formulario, mainPanel;
 	JButton conectarConDB;
@@ -42,7 +43,11 @@ public class ImportarBaseDeDatos extends PanelBDOO {
 	}
 	
 	@Override
-	void cargarUI() {
+	public void cargarUI() {
+		if (isLoaded)
+			return;
+		
+		isLoaded = true;
 		agregarCamposFormulario();
 		agregarFormulario();
 		agregarBotonConectarConDB();
@@ -57,7 +62,7 @@ public class ImportarBaseDeDatos extends PanelBDOO {
 		conectarConDB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				listener.mostrarConexionConDB(((JTextField)campos.get(_IP_).campo).getText(),
+				listener.mostrarListaDeEmpleadosImportacion(((JTextField)campos.get(_IP_).campo).getText(),
 											  ((JTextField)campos.get(_PUERTO_).campo).getText(),
 											  ((JTextField)campos.get(_DB_).campo).getText(),
 											  ((JTextField)campos.get(_USUARIO_).campo).getText(),

@@ -1,3 +1,4 @@
+package pantallas;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -6,6 +7,9 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.DefaultListCellRenderer;
@@ -25,8 +29,8 @@ public class ListaDeEmpleados extends PanelBDOO {
 	Emple[] empleados;
 	PanelBDOOListener listener;
 	JPanel informacion;
-	JLabel empNoLabel, apellidoLabel, oficioLabel, dirLabel, fechaAltLabel, comisionLabel, deptLabel;
-	JTextField empNoField, apellidoField, oficioField, dirField, fechaAltField, comisionField, deptField;
+	String[] camposText = { Emple.__empNo__, Emple.__apellido__, Emple.__oficio__, Emple.__dir__, Emple.__fechaAlt__, Emple.__salario__, Emple.__comision__, Emple.__dept__ };
+	LinkedHashMap<String, Campo> campos;
 	
 	public ListaDeEmpleados(PanelBDOOListener listener, Emple[] empleados) throws Exception {
 		super();
@@ -39,6 +43,7 @@ public class ListaDeEmpleados extends PanelBDOO {
 		
 		this.listener = listener;
 		this.empleados = empleados;
+		this.campos = new LinkedHashMap<String, Campo>();
 	}
 	
 	public ListaDeEmpleados(PanelBDOOListener listener, Emple[] empleados, Font fuente) throws Exception {
@@ -60,62 +65,16 @@ public class ListaDeEmpleados extends PanelBDOO {
 
 	private void agregarCamposDeInformacion() {
 		this.informacion = new JPanel(new GridLayout(0,2));
-		
-		this.empNoLabel = new JLabel("empNo: ");
-		this.empNoLabel.setFont(this.fuente);
-		this.empNoField = new JTextField();
-		this.empNoField.setFont(this.fuente);
-		this.empNoField.setEditable(false);
-		this.informacion.add(empNoLabel);
-		this.informacion.add(empNoField);
-		
-		this.apellidoLabel = new JLabel("Apellido: ");
-		this.apellidoLabel.setFont(this.fuente);
-		this.apellidoField = new JTextField();
-		this.apellidoField.setFont(this.fuente);
-		this.apellidoField.setEditable(false);
-		this.informacion.add(apellidoLabel);
-		this.informacion.add(apellidoField);
-		
-		this.oficioLabel = new JLabel("Oficio: ");
-		this.oficioLabel.setFont(this.fuente);
-		this.oficioField = new JTextField();
-		this.oficioField.setFont(this.fuente);
-		this.oficioField.setEditable(false);
-		this.informacion.add(oficioLabel);
-		this.informacion.add(oficioField);
-		
-		this.dirLabel = new JLabel("Director: ");
-		this.dirLabel.setFont(this.fuente);
-		this.dirField = new JTextField();
-		this.dirField.setFont(this.fuente);
-		this.dirField.setEditable(false);
-		this.informacion.add(dirLabel);
-		this.informacion.add(dirField);
-		
-		this.fechaAltLabel = new JLabel("Fecha de alta: ");
-		this.fechaAltLabel.setFont(this.fuente);
-		this.fechaAltField = new JTextField();
-		this.fechaAltField.setFont(this.fuente);
-		this.fechaAltField.setEditable(false);
-		this.informacion.add(fechaAltLabel);
-		this.informacion.add(fechaAltField);
-		
-		this.comisionLabel = new JLabel("Comisión: ");
-		this.comisionLabel.setFont(this.fuente);
-		this.comisionField = new JTextField();
-		this.comisionField.setFont(this.fuente);
-		this.comisionField.setEditable(false);
-		this.informacion.add(comisionLabel);
-		this.informacion.add(comisionField);
-		
-		this.deptLabel = new JLabel("Departamento: ");
-		this.deptLabel.setFont(this.fuente);
-		this.deptField = new JTextField();
-		this.deptField.setFont(this.fuente);
-		this.deptField.setEditable(false);
-		this.informacion.add(deptLabel);
-		this.informacion.add(deptField);
+		for (String campoText : camposText) {
+			JTextField textField = new JTextField();
+			textField.setFont(this.fuente);
+			textField.setEditable(false);
+			Campo campo = new Campo(campoText + ": ", textField);
+			campo.etiqueta.setFont(this.fuente);
+			informacion.add(campo.etiqueta);
+			informacion.add(textField);
+			campos.put(campoText, campo);
+		}
 		
 		GridBagConstraints c = new GridBagConstraints();
 		c.weighty = 1;
@@ -143,9 +102,9 @@ public class ListaDeEmpleados extends PanelBDOO {
 	}
 	
 	private void cargarDatos(Emple emple) {
-		empNoField.setText(String.valueOf(emple.getEmpNo()));
-		apellidoField.setText(emple.getApellido());
-		oficioField.setText(emple.getOficio());
+		((JTextField)campos.get(Emple.__empNo__).campo).setText(String.valueOf(emple.getEmpNo()));
+		((JTextField)campos.get(Emple.__apellido__).campo).setText(emple.getApellido());
+		((JTextField)campos.get(Emple.__oficio__).campo).setText(emple.getOficio());
 		Emple dir = emple.getDir();
 		String dirNombre;
 		if (dir == null) {
@@ -153,9 +112,10 @@ public class ListaDeEmpleados extends PanelBDOO {
 		} else {
 			dirNombre = dir.getApellido();
 		}
-		dirField.setText(dirNombre);
-		fechaAltField.setText(emple.getFechaAlt().toString());
-		comisionField.setText(String.valueOf(emple.getComision()));
+		((JTextField)campos.get(Emple.__dir__).campo).setText(dirNombre);
+		((JTextField)campos.get(Emple.__fechaAlt__).campo).setText(emple.getFechaAlt().toString());
+		((JTextField)campos.get(Emple.__salario__).campo).setText(String.valueOf(emple.getSalario()));
+		((JTextField)campos.get(Emple.__comision__).campo).setText(String.valueOf(emple.getComision()));
 		Depart dept = emple.getDept();
 		String dnombre;
 		if (dept == null) {
@@ -163,6 +123,6 @@ public class ListaDeEmpleados extends PanelBDOO {
 		} else {
 			dnombre = emple.getDept().getDnombre();
 		}
-		deptField.setText(dnombre);
+		((JTextField)campos.get(Emple.__dept__).campo).setText(dnombre);
 	}
 }
