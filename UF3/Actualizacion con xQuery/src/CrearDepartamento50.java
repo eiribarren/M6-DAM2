@@ -22,7 +22,7 @@ public class CrearDepartamento50 {
 							+ "<DEPT_NO>50</DEPT_NO> "
 							+ "<DNOMBRE>INFORMÁTICA</DNOMBRE> "
 							+ "<LOC>Valencia</LOC> "
-							+ "</DEP_ROW>"
+							+ "</DEP_ROW> "
 							+ "into /departamentos";
 			consulta.executeCommand(actual);
 		} catch(XQException e)
