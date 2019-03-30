@@ -1,5 +1,6 @@
 package objetos;
 
+
 public class Campo {
 	int longitud, valorMinimo, valorMaximo;
 	String nombre, valor, expresionRegular;
