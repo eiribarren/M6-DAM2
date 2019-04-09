@@ -27,6 +27,9 @@ public class BaseDatos {
 	}
 	
 	public void insertarPedido(Pedido pedido) {
+		Producto producto = this.getProducto(pedido.getProducto().getIdproducto());
+		pedido.setProducto(producto);
+		
 		this.db.store(pedido);
 		this.db.commit();
 	}
@@ -58,6 +61,31 @@ public class BaseDatos {
 			return producto.getFirst();
 		} else {
 			return null;
+		}
+	}
+	
+	public Producto getPedido(int id) {
+		ICriterion criterio = Where.equal("numeroPedido", id);
+		CriteriaQuery query = new CriteriaQuery(Pedido.class, criterio);
+		Objects<Producto> producto = this.db.getObjects(query);
+		
+		if (producto.hasNext()) {
+			return producto.getFirst();
+		} else {
+			return null;
+		}
+	}
+	
+	public void updateProducto(Producto product) {
+		Producto productoDB = this.getProducto(product.getIdproducto());
+		
+		if (productoDB != null) {
+			productoDB.setDescripcion(product.getDescripcion());
+			productoDB.setStockactual(product.getStockactual());
+			productoDB.setStockminimo(product.getStockminimo());
+			
+			this.db.store(productoDB);
+			this.db.commit();
 		}
 	}
 	

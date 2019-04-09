@@ -36,8 +36,12 @@ public class Prueba {
         	//Añado el propertychangelistener al producto
         	product.addPropertyChangeListener(pedido);
         	
-        	//Asigno un stock bajo el mínimo (5-4 < 2) al producto
-        	product.setStockactual(4);
+        	//Resto una cantidad al stock para que quede bajo el mínimo (5-4 < 2)
+        	product.restarStockActual(4);
+        	
+        	db = new BaseDatos(__DB__);
+        	db.updateProducto(product);
+        	db.close();
         } 
 
         //Muestro los productos para ver como no se ha alterado el stock
