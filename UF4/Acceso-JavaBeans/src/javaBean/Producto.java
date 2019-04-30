@@ -66,15 +66,22 @@ public class Producto implements Serializable {
 		}
 	}
 	
-	public void restarStockActual(int cantidad) {
+	public void vender(int cantidad) {
 		int valorAnterior = this.stockactual;
 		this.stockactual -= cantidad;
+		
+		BaseDatos db = new BaseDatos("Producto_Ped.BD");
+		Venta venta = db.crearVenta(this.idproducto, cantidad);
 		
 		if (this.stockactual < getStockminimo()) // hay que realizar pedido
 		{
 			propertySupport.firePropertyChange("stockactual", valorAnterior, this.stockactual);
 			this.stockactual = valorAnterior; // dejamos el stock anterior, no actualizamos
+			venta.setObservaciones("Pendiente para realizar el pedido");
+			db.updateVenta(venta);
 		}
+		
+		db.close();
 	}
 
 	public int getStockminimo() {

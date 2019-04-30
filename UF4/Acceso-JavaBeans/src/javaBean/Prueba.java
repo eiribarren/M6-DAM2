@@ -37,7 +37,7 @@ public class Prueba {
         	product.addPropertyChangeListener(pedido);
         	
         	//Resto una cantidad al stock para que quede bajo el mínimo (5-4 < 2)
-        	product.restarStockActual(4);
+        	product.vender(4);
         	
         	db = new BaseDatos(__DB__);
         	db.updateProducto(product);

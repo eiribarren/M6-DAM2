@@ -3,6 +3,7 @@ package javaBean;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.neodatis.odb.ODB;
@@ -85,6 +86,47 @@ public class BaseDatos {
 			productoDB.setStockminimo(product.getStockminimo());
 			
 			this.db.store(productoDB);
+			this.db.commit();
+		}
+	}
+	
+	public Venta crearVenta(int idProducto, int cantidad) {
+		Venta venta = new Venta(this.getNuevoIdVenta(), new Date(System.currentTimeMillis()), cantidad, idProducto, "");
+		
+		this.db.store(venta);
+		this.db.commit();
+		
+		return venta;
+	}
+	
+	public int getNuevoIdVenta() {
+		Values vals = this.db.getValues(new ValuesCriteriaQuery(Venta.class).max("numeroVenta"));
+		
+		return ((BigDecimal)vals.next().getByIndex(0)).intValue() + 1;
+	}
+	
+	public Venta getVenta(int id) {
+		ICriterion criterio = Where.equal("numeroVenta", id);
+		CriteriaQuery query = new CriteriaQuery(Venta.class, criterio);
+		Objects<Venta> ventas = this.db.getObjects(query);
+		
+		if (ventas.hasNext()) {
+			return ventas.getFirst();
+		} else {
+			return null;
+		}
+	}
+	
+	public void updateVenta(Venta venta) {
+		Venta ventaDB = this.getVenta(venta.getNumeroVenta());
+		
+		if (ventaDB != null) {
+			ventaDB.setCantidad(venta.getCantidad());
+			ventaDB.setFechaVenta(venta.getFechaVenta());
+			ventaDB.setIdProducto(venta.getIdProducto());
+			ventaDB.setObservaciones(venta.getObservaciones());
+			
+			this.db.store(ventaDB);
 			this.db.commit();
 		}
 	}
