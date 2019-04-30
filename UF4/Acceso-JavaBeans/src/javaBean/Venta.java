@@ -1,9 +1,11 @@
 package javaBean;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Venta implements Serializable {
+public class Venta implements Serializable, PropertyChangeListener {
 	int numeroVenta;
 	Date fechaVenta;
 	int cantidad;
@@ -59,6 +61,19 @@ public class Venta implements Serializable {
 
 	public void setObservaciones(String observaciones) {
 		this.observaciones = observaciones;
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName().equals("stockactual")) {
+	    	BaseDatos db = new BaseDatos("Producto_Ped.BD");
+	    	
+	    	Venta venta = ((Producto)evt.getSource()).getVenta();
+	    	venta.setObservaciones("Pendiente de pedido por falta de stock");
+	    	db.updateVenta(venta);
+	    	
+	    	db.close();
+    	}
 	}
 
 }

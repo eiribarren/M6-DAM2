@@ -53,6 +53,15 @@ public class BaseDatos {
 		return result;
 	}
 	
+	public List<Venta> getVentas() {
+		List<Venta> result = new ArrayList<Venta>();
+		Objects<Venta> ventas = this.db.getObjects(Venta.class);
+		while ( ventas.hasNext() ) {
+			result.add(ventas.next());
+		}
+		return result;
+	}
+	
 	public Producto getProducto(int id) {
 		ICriterion criterio = Where.equal("idproducto", id);
 		CriteriaQuery query = new CriteriaQuery(Producto.class, criterio);

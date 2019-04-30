@@ -29,12 +29,15 @@ public class Prueba {
         //Compruebo que el producto existe antes de hacer nada
         if (product != null) {
         	Pedido pedido = new Pedido();
+        	Venta venta = new Venta();
         	
         	//Añado ahora el producto al pedido
         	pedido.setProducto(product);
         	
         	//Añado el propertychangelistener al producto
         	product.addPropertyChangeListener(pedido);
+        	product.addPropertyChangeListener(venta);
+        	product.setVenta(venta);
         	
         	//Resto una cantidad al stock para que quede bajo el mínimo (5-4 < 2)
         	product.vender(4);
@@ -51,6 +54,9 @@ public class Prueba {
         //Muestro los productos para ver como se ha creado un pedido
         System.out.println("\n" + "PEDIDOS");
         ver.mostrarPedidos();
+        
+        System.out.println("\n" + "VENTAS");
+        ver.mostrarVentas();
     }
 }
 

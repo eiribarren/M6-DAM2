@@ -16,6 +16,37 @@ public class VerProductos implements Serializable {
 		mostrarProductos();
 		
 		mostrarPedidos();
+		
+		mostrarVentas();
+	}
+
+	public void mostrarVentas() {
+		mostrarColumnasVenta();
+		
+		mostrarDatosVentas();
+	}
+
+	public void mostrarDatosVentas() {
+		BaseDatos db = new BaseDatos("Producto_Ped.BD");
+		for (Venta venta : db.getVentas() ) {
+			System.out.println("|" + rellenarTexto(String.valueOf(venta.getNumeroVenta())) + "|"
+					+ rellenarTexto(venta.getFechaVenta().toString()) + "|"
+					+ rellenarTexto(String.valueOf(venta.getCantidad())) + "|"
+					+ rellenarTexto(db.getProducto(venta.getIdProducto()).getDescripcion()) + "|"
+					+ rellenarTexto(venta.getObservaciones()) + "|");
+		}
+		db.close();
+		System.out.println(linea(5));
+	}
+
+	public void mostrarColumnasVenta() {
+		System.out.println(linea(5));
+		System.out.println("|" + rellenarTexto("Numero de venta") + "|" 
+				+ rellenarTexto("Fecha") + "|"
+				+ rellenarTexto("Cantidad") + "|"
+				+ rellenarTexto("Producto") + "|"
+				+ rellenarTexto("Observaciones") + "|");
+		System.out.println(linea(5));
 	}
 
 	public void mostrarPedidos() {
