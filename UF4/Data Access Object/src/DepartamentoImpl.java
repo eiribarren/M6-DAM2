@@ -51,7 +51,10 @@ public class DepartamentoImpl implements DepartamentoDAO {
 		ICriterion criterio = Where.equal("deptno", deptno);
 		CriteriaQuery query = new CriteriaQuery(Departamento.class, criterio);
 		Objects<Departamento> deps = bd.getObjects(query);
-		return deps.getFirst();
+		if (deps.hasNext()) {
+			return deps.getFirst();
+		}
+		return null;
 	}
 
 }
