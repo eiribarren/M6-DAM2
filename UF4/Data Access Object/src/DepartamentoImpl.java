@@ -36,6 +36,9 @@ public class DepartamentoImpl implements DepartamentoDAO {
 	@Override
 	public boolean modificarDep(int deptno, Departamento dep) {
 		Departamento dept = consultarDep(deptno);
+		if (dept == null || dep == null) {
+			return false;
+		}
 		dept.setDnombre(dep.getDnombre());
 		dept.setLoc(dept.getLoc());
 		bd.store(dept);
