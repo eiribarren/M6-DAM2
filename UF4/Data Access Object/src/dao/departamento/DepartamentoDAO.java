@@ -1,4 +1,4 @@
-
+package dao.departamento;
 public interface DepartamentoDAO {
 	public boolean insertarDep(Departamento dep);
 	public boolean eliminarDep(int deptno);

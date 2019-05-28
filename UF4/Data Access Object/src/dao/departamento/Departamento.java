@@ -1,3 +1,4 @@
+package dao.departamento;
 import java.io.Serializable;
 
 public class Departamento implements Serializable {
